@@ -8,15 +8,15 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-@Document(collection = "produits")
-public class Produit {
+@Document(collection = "monstres")
+public class Monstre {
 
     @Id
     @Indexed(unique = true) 
     private int id;
 
-    @NotBlank(message = "Le nom du produit est obligatoire.")
-    @Size(max = 25, message = "Le nom du produit ne peut pas dépasser 25 caractères.")
+    @NotBlank(message = "Le nom du monstre est obligatoire.")
+    @Size(max = 25, message = "Le nom du monstre ne peut pas dépasser 25 caractères.")
     private String nom;
 
     @NotBlank(message = "La description est obligatoire.")
