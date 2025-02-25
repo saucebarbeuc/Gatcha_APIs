@@ -1,4 +1,5 @@
 package imt.production.dev.Enum;
 
-public class TypeElementaire {
+public enum TypeElementaire {
+    Feu, Eau, Terre, Air;
 }

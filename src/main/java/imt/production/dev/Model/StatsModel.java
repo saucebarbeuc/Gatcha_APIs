@@ -1,13 +1,13 @@
 package imt.production.dev.Model;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Data
 @Getter
 @Setter
-public class Stats {
+@AllArgsConstructor
+@NoArgsConstructor
+public class StatsModel {
 
     private int pv;
     private int atq;

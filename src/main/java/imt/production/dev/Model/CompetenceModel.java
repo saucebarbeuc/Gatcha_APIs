@@ -7,9 +7,8 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Competence {
+public class CompetenceModel {
 
-    private String Id;
     private String nom;
     private int degatsBase;
     private double ratioDegats;
