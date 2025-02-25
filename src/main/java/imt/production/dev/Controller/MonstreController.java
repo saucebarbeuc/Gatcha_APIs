@@ -1,91 +1,73 @@
 package imt.production.dev.Controller;
 
-import java.util.List;
-import java.util.Optional;
-
+import imt.production.dev.Dto.MonstreDto;
+import imt.production.dev.Model.MonstreModel;
+import imt.production.dev.Service.MonstreService;
+import imt.production.dev.Mapper.MonstreMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import imt.production.dev.Model.Monstre;
-import imt.production.dev.Service.MonstreService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/monstres")
-@Tag(name = "Monstres", description = "Gestion des monstres")
 public class MonstreController {
 
     @Autowired
     private MonstreService monstreService;
 
-    // Get all products
-    @Operation(summary = "Récupérer tous les monstres")
+    @Autowired
+    private MonstreMapper monstreMapper;
+
     @GetMapping
-    public List<Monstre> getAllMonstres() {
-        return monstreService.getAllMonstres();
+    public ResponseEntity<List<MonstreDto>> getMonstres() {
+        List<MonstreModel> monstreModels = monstreService.getAllMonstres();
+        List<MonstreDto> monstresDto = monstreModels.stream()
+                .map(monstreMapper::toDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(monstresDto);
     }
 
-    // Create a new product
-    @Operation(summary = "Créer un nouveau monstre")
-    @PostMapping
-    public ResponseEntity<Monstre> createMonstre(@Valid @RequestBody Monstre monstre) {
-        Monstre createdMonstre = monstreService.createMonstre(monstre);
-        return ResponseEntity.ok(createdMonstre);
-    }
-
-    @Operation(summary = "Récupérer un monstre par son ID")
     @GetMapping("/{id}")
-    public ResponseEntity<Monstre> getMonstreById(@PathVariable int id) {
-        Optional<Monstre> monstre = monstreService.getMonstreById(id);
-        return monstre.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<MonstreDto> getMonstre(@PathVariable String id) {
+        Optional<MonstreModel> monstre = monstreService.getMonstreById(id);
+        return monstre.map(value -> ResponseEntity.ok(monstreMapper.toDto(value)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Update an existing product
-    @Operation(summary = "Mettre à jour un monstre existant")
-    @PutMapping("/{id}")
-    public ResponseEntity<Monstre> updateMonstre(@PathVariable int id, @Valid @RequestBody Monstre updatedMonstre) {
-        return monstreService.getMonstreById(id).map(existingMonstre -> {
-            existingMonstre.setNom(updatedMonstre.getNom());
-            existingMonstre.setDescription(updatedMonstre.getDescription());
-            existingMonstre.setPrix(updatedMonstre.getPrix());
-            Monstre savedMonstre = monstreService.createMonstre(existingMonstre);
-            return ResponseEntity.ok(savedMonstre);
-        }).orElse(ResponseEntity.notFound().build());
+    @PostMapping
+    public ResponseEntity<MonstreDto> createMonstre(@RequestBody MonstreDto monstreDto) {
+        MonstreModel monstreModel = monstreMapper.toEntity(monstreDto);
+        MonstreModel createdMonstreModel = monstreService.createMonstre(monstreModel);
+        return ResponseEntity.status(201).body(monstreMapper.toDto(createdMonstreModel));
     }
-    
-    // Delete a product by ID
-    @Operation(summary = "Supprimer un monstre par son ID")
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MonstreDto> updateMonstre(@PathVariable String id, @RequestBody MonstreDto monstreDto) {
+        Optional<MonstreModel> existingMonstre = monstreService.getMonstreById(id);
+        if (existingMonstre.isPresent()) {
+            MonstreModel updatedMonstreModel = monstreService.updateMonstre(id, monstreMapper.toEntity(monstreDto));
+            return ResponseEntity.ok(monstreMapper.toDto(updatedMonstreModel));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMonstre(@PathVariable int id) {
-        Optional<Monstre> monstre = monstreService.getMonstreById(id);
-        if (monstre.isPresent()) {
-            monstreService.deleteMonstreById(id);
+    public ResponseEntity<Void> deleteMonstre(@PathVariable String id) {
+        Optional<MonstreModel> existingMonstre = monstreService.getMonstreById(id);
+        if (existingMonstre.isPresent()) {
+            monstreService.deleteMonstre(id);
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
     }
 
-    // Get products with price less than a certain value
-    @Operation(summary = "Recupere les monstres dont le prix est inferieur a une certaine valeur")
-    @GetMapping("/prix/{maxPrix}")
-    public List<Monstre> getMonstresByPrix(@PathVariable int maxPrix) {
-        return monstreService.getMonstresByPrixLessThan(maxPrix);
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllMonstres() {
+        monstreService.deleteAllMonstres();
+        return ResponseEntity.noContent().build();
     }
-    
-
- 
 }
-
-
-
-

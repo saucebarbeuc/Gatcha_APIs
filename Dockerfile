@@ -1,4 +1,4 @@
-FROM maven:3.9.6-amazoncorretto-21 as build
+FROM maven:3.9.6-amazoncorretto-21 AS build
 RUN mkdir -p /opt/dev
 WORKDIR /opt/dev
 COPY pom.xml /opt/dev

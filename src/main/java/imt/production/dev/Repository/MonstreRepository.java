@@ -1,13 +1,12 @@
 package imt.production.dev.Repository;
 
-import java.util.List;
-
+import imt.production.dev.Model.MonstreModel;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
 
-import imt.production.dev.Model.Monstre;
+import java.util.Optional;
 
-@Repository
-public interface MonstreRepository extends MongoRepository<Monstre, Integer> {
-    List<Monstre> findByPrixLessThan(int prix);
+
+public interface MonstreRepository extends MongoRepository<MonstreModel, Integer> {
+    Optional<MonstreModel> findById(String id);
+    void deleteById(String id);
 }

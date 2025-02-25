@@ -9,8 +9,9 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=mongoadmin
       - MONGO_INITDB_ROOT_PASSWORD=MyP4ssw0rd!!
-    # volumes:
-    #   - mongo-data:/data/db
+      - MONGO_INITDB_DATABASE=gatcha_api
+    volumes:
+       - mongo-data:/data/db
     networks:
       - backend
     healthcheck:
@@ -23,7 +24,7 @@ services:
           "CMD",
           "mongosh",
           "--quiet",
-          "127.0.0.1/admin",
+          "127.0.0.1/gatcha_api",
           "--eval",
           "'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)'",
         ]
@@ -31,7 +32,6 @@ services:
   spring-api:
     build:
       context: ../
-      dockerfile: docker-dev-env/spring-api.dockerfile
     container_name: spring-api
     ports:
       - "8080:8080"
@@ -43,8 +43,8 @@ services:
     networks:
       - backend
 
-# volumes:
-#   mongo-data:
+volumes:
+   mongo-data:
 
 networks:
   backend:
