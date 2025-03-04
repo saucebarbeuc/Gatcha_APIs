@@ -51,16 +51,5 @@ services:
     networks:
       - app
 
-  frontend:
-    build:
-      context: ./front-service
-    ports:
-      - "8080:8080"
-    depends_on:
-      mongo:
-        condition: service_healthy
-    networks:
-      - app
-
 networks:
   app:
