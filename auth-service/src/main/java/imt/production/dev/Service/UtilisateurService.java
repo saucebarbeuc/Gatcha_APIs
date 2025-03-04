@@ -9,6 +9,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
+import imt.production.dev.DTO.JoueurDTO;
 import imt.production.dev.DTO.UtilisateurDTO;
 import imt.production.dev.Errors.HTTP_404.UtilisateurInexsitantException;
 import imt.production.dev.Errors.HTTP_409.UtilisateurDejaExistantException;
@@ -16,18 +17,17 @@ import imt.production.dev.Errors.HTTP_401.TokenExpireException;
 import imt.production.dev.Errors.HTTP_404.TokenInexsitantException;
 import imt.production.dev.Errors.HTTP_404.UtilisateurIdInexistantException;
 import imt.production.dev.Model.Utilisateur;
-// import imt.production.dev.Repository.JoueurRemoteRepository;
+import imt.production.dev.Repository.JoueurRemoteRepository;
 import imt.production.dev.Repository.UtilisateurRepository;
 import imt.production.dev.Utils.TokenUtils;
 
 @Service
 public class UtilisateurService {
 
-
     @Autowired
     private UtilisateurRepository utilisateurRepository;
-    // @Autowired
-    // private JoueurRemoteRepository joueurRemoteRepository;
+    @Autowired
+    private JoueurRemoteRepository joueurRemoteRepository;
 
     public Map<String, String> login(UtilisateurDTO dto) {
         Optional<Utilisateur> utilisateur = utilisateurRepository.findByUsernameAndPassword(dto.getUsername(), dto.getPassword());
@@ -70,6 +70,15 @@ public class UtilisateurService {
         }
 
         Utilisateur utilisateur = new Utilisateur(dto.getUsername(), dto.getPassword());
+        LocalDateTime dateTime = LocalDateTime.now();
+        String token = TokenUtils.generateToken(utilisateur.getUsername(), dateTime);
+
+        utilisateur.setDate(dateTime);
+        utilisateur.setToken(token);
+        
+        joueurRemoteRepository.createJoueur(new JoueurDTO(dto.getUsername()), token);
+        utilisateurRepository.save(utilisateur);
+
         return Map.of("id", utilisateurRepository.save(utilisateur).getId());
     }
 

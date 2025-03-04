@@ -1,6 +1,5 @@
 package imt.production.dev.Controller;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import imt.production.dev.DTO.UtilisateurDTO;
-import imt.production.dev.Model.Utilisateur;
+// import imt.production.dev.Model.Utilisateur;
 import imt.production.dev.Service.UtilisateurService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,11 +33,11 @@ public class UtilisateurController {
         return ResponseEntity.ok().body(response);
     }
 
-    @Operation(summary = "Récupérer tous les utilisateurs")
-    @GetMapping
-    public List<Utilisateur> getAllUtilisateurs() {
-        return utilisateurService.getAllUtilisateurs();
-    }
+    // @Operation(summary = "Récupérer tous les utilisateurs")
+    // @GetMapping
+    // public List<Utilisateur> getAllUtilisateurs() {
+    //     return utilisateurService.getAllUtilisateurs();
+    // }
 
     @Operation(summary = "Créer un nouveau utilisateur")
     @PostMapping

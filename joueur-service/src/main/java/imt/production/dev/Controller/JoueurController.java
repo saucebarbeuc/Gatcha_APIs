@@ -2,6 +2,8 @@ package imt.production.dev.Controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,11 +46,13 @@ public class JoueurController {
         return ResponseEntity.notFound().build();
     }
 
-
     @Operation(summary = "Créer un nouveau joueur")
     @PostMapping
-    public Joueur createJoueur(@RequestBody JoueurDTO joueur) {
-        return joueurService.createJoueur(joueur);
+    // public ResponseEntity<JoueurDTO> createJoueur(@RequestBody JoueurDTO joueur, HttpServletRequest request) {
+    public ResponseEntity<JoueurDTO> createJoueur(HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        JoueurDTO newJoueur = joueurService.createJoueur(new JoueurDTO(username));
+        return ResponseEntity.ok(newJoueur);
     }
 
     @Operation(summary = "Mettre à jour un joueur")

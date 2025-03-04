@@ -1,6 +1,7 @@
 package imt.production.dev.Service;
 
 import imt.production.dev.DTO.JoueurDTO;
+import imt.production.dev.Errors.HTTP_409.UtilisateurDejaExistantException;
 import imt.production.dev.Model.Joueur;
 import imt.production.dev.Repository.JoueurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ public class JoueurService {
 
     @Autowired
     private JoueurRepository joueurRepository;
+
+    
 
     public List<Joueur> getAllJoueurs() {
         return joueurRepository.findAll();
@@ -33,35 +36,20 @@ public class JoueurService {
         }
     }
 
-    public Joueur createJoueur(JoueurDTO dto) {
+    public JoueurDTO createJoueur(JoueurDTO dto) {
         Joueur joueur = new Joueur();
         joueur.setName(dto.getUsername());
-        joueur.setLevel(0);
+        joueur.setLevel(1);
         joueur.setExperience(0);
         joueur.setExperienceThreshold(50);
         joueur.setMonsters(new ArrayList<>());
-        return joueurRepository.save(joueur);
+        
+        if (joueurRepository.existsByName(dto.getUsername())) {
+            throw new UtilisateurDejaExistantException("Joueur déjà existant");
+        }
+
+        return new JoueurDTO(joueurRepository.save(joueur).getName());
     }
-
-    // public Joueur updateJoueur(String id, Joueur joueurDetails) {
-    //     Joueur joueur = joueurRepository.findById(id).orElse(null);
-    //     if (joueur != null) {
-    //         joueur.setName(joueurDetails.getName());
-    //         joueur.setLevel(Math.min(joueurDetails.getLevel(), 50));
-    //         joueur.setExperience(joueurDetails.getExperience());
-    //         joueur.setExperienceThreshold(joueurDetails.getExperienceThreshold());
-
-    //         int maxMonsters = 10 + joueur.getLevel();
-    //         if (joueurDetails.getMonsters().size() > maxMonsters) {
-    //             joueur.setMonsters(new ArrayList<>(joueurDetails.getMonsters().subList(0, maxMonsters)));
-    //         } else {
-    //             joueur.setMonsters(joueurDetails.getMonsters());
-    //         }
-
-    //         return joueurRepository.save(joueur);
-    //     }
-    //     return null;
-    // }
 
     public Joueur updateJoueur(String id, JoueurDTO dto) {
         Optional<Joueur> joueur = joueurRepository.findById(id);
@@ -73,7 +61,7 @@ public class JoueurService {
         }
 
         return  null;
-}
+    }
 
     public void deleteJoueur(String id) {
         joueurRepository.deleteById(id);

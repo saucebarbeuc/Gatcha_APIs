@@ -8,7 +8,7 @@ public class JoueurDTO {
     private String username;
 
     public JoueurDTO(String username) {
-        this.username = username;
+        this.username = username;        
     }
 
     public String getUsername() {
@@ -18,6 +18,5 @@ public class JoueurDTO {
     public void setUsername(String username) {
         this.username = username;
     }
-
 
 }

@@ -3,11 +3,9 @@ package imt.production.dev.Controller;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,17 +33,14 @@ public class MonstreController {
     @Operation(summary = "Récupérer tous les monstres")
     @GetMapping
     public List<Monstre> getAllMonstres(HttpServletRequest request) {
-        String username = (String) request.getAttribute("username");
-        Logger.getLogger("MonstreController").info("Read All Monstre par " + username);
-
+        // String username = (String) request.getAttribute("username");
         return monstreService.getAllMonstres();
     }
 
     @Operation(summary = "Créer un nouveau monstre")
     @PostMapping
     public ResponseEntity<Map<String, String>> createMonstre(@Valid @RequestBody MonstreDTO dto, HttpServletRequest request) {
-        String username = (String) request.getAttribute("username");
-        Logger.getLogger("MonstreController").info("Creation Monstre par " + username);
+        // String username = (String) request.getAttribute("username");
 
         return ResponseEntity.ok(monstreService.createMonstre(dto));
     }
