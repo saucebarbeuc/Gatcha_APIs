@@ -1,5 +1,7 @@
 package imt.production.dev.Service;
 
+import imt.production.dev.Dto.JoueurDto;
+import imt.production.dev.Mapper.JoueurMapper;
 import imt.production.dev.Model.Joueur;
 import imt.production.dev.Repository.JoueurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class JoueurService {
@@ -15,47 +18,54 @@ public class JoueurService {
     @Autowired
     private JoueurRepository joueurRepository;
 
-    public List<Joueur> getAllJoueurs() {
-        return joueurRepository.findAll();
+    @Autowired
+    private JoueurMapper joueurMapper;
+
+    public List<JoueurDto> getAllJoueurs() {
+        List<Joueur> joueurs = joueurRepository.findAll();
+        return joueurs.stream()
+                .map(joueurMapper::toDto)
+                .collect(Collectors.toList());
     }
 
-    public Optional<Joueur> getJoueurById(String id) {
-        return joueurRepository.findById(id);
+    public Optional<JoueurDto> getJoueurById(String id) {
+        Optional<Joueur> joueur = joueurRepository.findById(id);
+        return joueur.map(joueurMapper::toDto);
     }
 
-    public Optional<Joueur> getLevelById(String id) {
-        Joueur joueur = joueurRepository.findById(id).orElse(null);
-        if (joueur == null) {
-            return null;
-        } else {
-            return Optional.empty();
-        }
+    public Optional<Integer> getLevelById(String id) {
+        Optional<Joueur> joueur = joueurRepository.findById(id);
+        return joueur.map(Joueur::getLevel);
     }
 
-    public Joueur createJoueur(Joueur joueur) {
+    public JoueurDto createJoueur(JoueurDto joueurDto) {
+        Joueur joueur = joueurMapper.toEntity(joueurDto);
         joueur.setLevel(0);
         joueur.setExperience(0);
         joueur.setExperienceThreshold(50);
-        joueur.setMonsters(new ArrayList<>());
-        return joueurRepository.save(joueur);
+        joueur.setMonstres(new ArrayList<>());
+        Joueur savedJoueur = joueurRepository.save(joueur);
+        return joueurMapper.toDto(savedJoueur);
     }
 
-    public Joueur updateJoueur(String id, Joueur joueurDetails) {
-        Joueur joueur = joueurRepository.findById(id).orElse(null);
-        if (joueur != null) {
-            joueur.setName(joueurDetails.getName());
-            joueur.setLevel(Math.min(joueurDetails.getLevel(), 50));
-            joueur.setExperience(joueurDetails.getExperience());
-            joueur.setExperienceThreshold(joueurDetails.getExperienceThreshold());
+    public JoueurDto updateJoueur(String id, JoueurDto joueurDto) {
+        Optional<Joueur> optionalJoueur = joueurRepository.findById(id);
+        if (optionalJoueur.isPresent()) {
+            Joueur joueur = optionalJoueur.get();
+            joueur.setName(joueurDto.getNom());
+            joueur.setLevel(Math.min(joueurDto.getLevel(), 50));
+            joueur.setExperience(joueurDto.getExperience());
+            joueur.setExperienceThreshold(joueurDto.getExperienceThreshold());
 
-            int maxMonsters = 10 + joueur.getLevel();
-            if (joueurDetails.getMonsters().size() > maxMonsters) {
-                joueur.setMonsters(new ArrayList<>(joueurDetails.getMonsters().subList(0, maxMonsters)));
+            int maxMonstres = 10 + joueur.getLevel();
+            if (joueurDto.getMonstres().size() > maxMonstres) {
+                joueur.setMonstres(joueurDto.getMonstres().subList(0, maxMonstres));
             } else {
-                joueur.setMonsters(joueurDetails.getMonsters());
+                joueur.setMonstres(joueurDto.getMonstres());
             }
 
-            return joueurRepository.save(joueur);
+            Joueur updatedJoueur = joueurRepository.save(joueur);
+            return joueurMapper.toDto(updatedJoueur);
         }
         return null;
     }
@@ -64,16 +74,17 @@ public class JoueurService {
         joueurRepository.deleteById(id);
     }
 
-    public Joueur gainExperience(String id, int experience) {
-        Joueur joueur = joueurRepository.findById(id).orElse(null);
-        if (joueur == null) {
-            return null;
+    public JoueurDto gainExperience(String id, int experience) {
+        Optional<Joueur> optionalJoueur = joueurRepository.findById(id);
+        if (optionalJoueur.isPresent()) {
+            Joueur joueur = optionalJoueur.get();
+            joueur.setExperience(joueur.getExperience() + experience);
+            if (joueur.getExperience() >= joueur.getExperienceThreshold()) {
+                return joueurMapper.toDto(levelUp(joueur));
+            }
+            return joueurMapper.toDto(joueurRepository.save(joueur));
         }
-        joueur.setExperience(joueur.getExperience() + experience);
-        if (joueur.getExperience() >= joueur.getExperienceThreshold()) {
-            return levelUp(joueur);
-        }
-        return joueurRepository.save(joueur);
+        return null;
     }
 
     public Joueur levelUp(Joueur joueur) {
@@ -86,25 +97,26 @@ public class JoueurService {
         return joueur;
     }
 
-    public Joueur acquireMonster(String id, String monster) {
-        Joueur joueur = joueurRepository.findById(id).orElse(null);
-        if (joueur == null) {
-            return null;
+    public JoueurDto ajouterMonstre(String id, String monstre) {
+        Optional<Joueur> optionalJoueur = joueurRepository.findById(id);
+        if (optionalJoueur.isPresent()) {
+            Joueur joueur = optionalJoueur.get();
+            int maxMonstres = 10 + joueur.getLevel();
+            if (joueur.getMonstres().size() < maxMonstres) {
+                joueur.getMonstres().add(monstre);
+                return joueurMapper.toDto(joueurRepository.save(joueur));
+            }
         }
-        int maxMonsters = 10 + joueur.getLevel();
-        if (joueur.getMonsters().size() < maxMonsters) {
-            joueur.getMonsters().add(monster);
-            return joueurRepository.save(joueur);
-        }
-        return joueur;
+        return null;
     }
 
-    public Joueur removeMonster(String id, String monster) {
-        Joueur joueur = joueurRepository.findById(id).orElse(null);
-        if (joueur == null) {
-            return null;
+    public JoueurDto supprimerMonstre(String id, String monstre) {
+        Optional<Joueur> optionalJoueur = joueurRepository.findById(id);
+        if (optionalJoueur.isPresent()) {
+            Joueur joueur = optionalJoueur.get();
+            joueur.getMonstres().remove(monstre);
+            return joueurMapper.toDto(joueurRepository.save(joueur));
         }
-        joueur.getMonsters().remove(monster);
-        return joueurRepository.save(joueur);
+        return null;
     }
 }

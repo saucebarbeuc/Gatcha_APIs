@@ -27,7 +27,7 @@ public class Joueur {
     private int experienceThreshold;
 
     @NotBlank(message = "Liste des monstres du joueur")
-    private List<String> monsters = new ArrayList<>();
+    private List<String> monstres = new ArrayList<>();
 
     // Getters and Setters
     public String getId() {
@@ -70,11 +70,11 @@ public class Joueur {
         this.experienceThreshold = experienceThreshold;
     }
 
-    public List<String> getMonsters() {
-        return monsters;
+    public List<String> getMonstres() {
+        return monstres;
     }
 
-    public void setMonsters(List<String> monsters) {
-        this.monsters = monsters;
+    public void setMonstres(List<String> monstres) {
+        this.monstres = monstres;
     }
 }
