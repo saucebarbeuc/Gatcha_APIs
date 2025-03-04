@@ -1,15 +1,13 @@
 package imt.production.dev.Mapper;
 
 import imt.production.dev.Dto.CompetenceDto;
-import imt.production.dev.Model.CompetenceModel;
-import org.springframework.stereotype.Component;
+import imt.production.dev.Model.Competence;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
 public class CompetenceMapper {
 
-    public CompetenceDto toDto(CompetenceModel competence) {
+    public static CompetenceDto toDto(Competence competence) {
         if (competence == null) {
             return null;
         }
@@ -23,11 +21,11 @@ public class CompetenceMapper {
         );
     }
 
-    public CompetenceModel toEntity(CompetenceDto competenceDto) {
+    public static Competence toEntity(CompetenceDto competenceDto) {
         if (competenceDto == null) {
             return null;
         }
-        return new CompetenceModel(
+        return new Competence(
                 competenceDto.getNom(),
                 competenceDto.getDegatsBase(),
                 competenceDto.getRatioDegats(),
@@ -37,11 +35,11 @@ public class CompetenceMapper {
         );
     }
 
-    public List<CompetenceDto> toDtoList(List<CompetenceModel> competences) {
-        return competences.stream().map(this::toDto).collect(Collectors.toList());
+    public static List<CompetenceDto> toDtoList(List<Competence> competences) {
+        return competences.stream().map(CompetenceMapper::toDto).collect(Collectors.toList());
     }
 
-    public List<CompetenceModel> toEntityList(List<CompetenceDto> competenceDtos) {
-        return competenceDtos.stream().map(this::toEntity).collect(Collectors.toList());
+    public static List<Competence> toEntityList(List<CompetenceDto> competenceDtos) {
+        return competenceDtos.stream().map(CompetenceMapper::toEntity).collect(Collectors.toList());
     }
 }

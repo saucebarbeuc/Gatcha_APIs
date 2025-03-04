@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "monstre")
-public class MonstreModel {
+public class Monstre {
 
     @Id
     private String id;
@@ -21,6 +21,6 @@ public class MonstreModel {
     private int niveau;
     private int experiences;
     private TypeElementaire typeElementaire;
-    private StatsModel stats;
-    private List<CompetenceModel> competences;
+    private Stats stats;
+    private List<Competence> competences;
 }

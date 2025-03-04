@@ -1,14 +1,17 @@
 package imt.production.dev.Dto;
 
 import imt.production.dev.Enum.TypeElementaire;
-import imt.production.dev.Model.StatsModel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import imt.production.dev.Model.Stats;
+import lombok.*;
 
 import java.util.List;
 
 @Data
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
+
 public class MonstreDto {
 
     private String id;
@@ -16,7 +19,7 @@ public class MonstreDto {
     private int niveau;
     private int experiences;
     private TypeElementaire typeElementaire;
-    private StatsModel stats;
+    private Stats stats;
     private List<CompetenceDto> competences;
 
 }

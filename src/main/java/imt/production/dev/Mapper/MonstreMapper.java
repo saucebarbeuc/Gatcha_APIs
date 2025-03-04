@@ -1,43 +1,39 @@
 package imt.production.dev.Mapper;
 
 import imt.production.dev.Dto.MonstreDto;
-import imt.production.dev.Model.MonstreModel;
+import imt.production.dev.Model.Monstre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
 public class MonstreMapper {
 
-    @Autowired
-    private CompetenceMapper competenceMapper;
-
-    public MonstreDto toDto(MonstreModel monstreModel) {
-        if (monstreModel == null) {
+    public static MonstreDto toDto(Monstre monstre) {
+        if (monstre == null) {
             return null;
         }
         return new MonstreDto(
-                monstreModel.getId(),
-                monstreModel.getNom(),
-                monstreModel.getNiveau(),
-                monstreModel.getExperiences(),
-                monstreModel.getTypeElementaire(),
-                monstreModel.getStats(),
-                competenceMapper.toDtoList(monstreModel.getCompetences())
+                monstre.getId(),
+                monstre.getNom(),
+                monstre.getNiveau(),
+                monstre.getExperiences(),
+                monstre.getTypeElementaire(),
+                monstre.getStats(),
+                CompetenceMapper.toDtoList(monstre.getCompetences())
         );
     }
 
-    public MonstreModel toEntity(MonstreDto monstreDto) {
+    public static Monstre toEntity(MonstreDto monstreDto) {
         if (monstreDto == null) {
             return null;
         }
-        return new MonstreModel(
+        return new Monstre(
                 monstreDto.getId(),
                 monstreDto.getNom(),
                 monstreDto.getNiveau(),
                 monstreDto.getExperiences(),
                 monstreDto.getTypeElementaire(),
                 monstreDto.getStats(),
-                competenceMapper.toEntityList(monstreDto.getCompetences())
+                CompetenceMapper.toEntityList(monstreDto.getCompetences())
         );
     }
 }

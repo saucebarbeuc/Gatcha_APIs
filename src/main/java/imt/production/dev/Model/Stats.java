@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class StatsModel {
+public class Stats {
 
     private int pv;
     private int atq;
