@@ -1,7 +1,9 @@
 package imt.production.dev.Controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import imt.production.dev.DTO.MonstreDTO;
 import imt.production.dev.Model.Monstre;
 import imt.production.dev.Service.MonstreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -28,62 +32,44 @@ public class MonstreController {
     @Autowired
     private MonstreService monstreService;
 
-    // Get all products
     @Operation(summary = "Récupérer tous les monstres")
     @GetMapping
-    public List<Monstre> getAllMonstres() {
+    public List<Monstre> getAllMonstres(HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        Logger.getLogger("MonstreController").info("Read All Monstre par " + username);
+
         return monstreService.getAllMonstres();
     }
 
-    // Create a new product
     @Operation(summary = "Créer un nouveau monstre")
     @PostMapping
-    public ResponseEntity<Monstre> createMonstre(@Valid @RequestBody Monstre monstre) {
-        Monstre createdMonstre = monstreService.createMonstre(monstre);
-        return ResponseEntity.ok(createdMonstre);
+    public ResponseEntity<Map<String, String>> createMonstre(@Valid @RequestBody MonstreDTO dto, HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        Logger.getLogger("MonstreController").info("Creation Monstre par " + username);
+
+        return ResponseEntity.ok(monstreService.createMonstre(dto));
     }
 
     @Operation(summary = "Récupérer un monstre par son ID")
     @GetMapping("/{id}")
-    public ResponseEntity<Monstre> getMonstreById(@PathVariable int id) {
+    public ResponseEntity<Monstre> getMonstreById(@PathVariable String id) {
         Optional<Monstre> monstre = monstreService.getMonstreById(id);
         return monstre.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-    // Update an existing product
     @Operation(summary = "Mettre à jour un monstre existant")
     @PutMapping("/{id}")
-    public ResponseEntity<Monstre> updateMonstre(@PathVariable int id, @Valid @RequestBody Monstre updatedMonstre) {
-        return monstreService.getMonstreById(id).map(existingMonstre -> {
-            existingMonstre.setNom(updatedMonstre.getNom());
-            existingMonstre.setDescription(updatedMonstre.getDescription());
-            existingMonstre.setPrix(updatedMonstre.getPrix());
-            Monstre savedMonstre = monstreService.createMonstre(existingMonstre);
-            return ResponseEntity.ok(savedMonstre);
-        }).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Map<String, String>> updateMonstre(@PathVariable String id, @Valid @RequestBody MonstreDTO dto) {
+        return ResponseEntity.ok(monstreService.updateMonstre(id, dto));
     }
     
-    // Delete a product by ID
     @Operation(summary = "Supprimer un monstre par son ID")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMonstre(@PathVariable int id) {
-        Optional<Monstre> monstre = monstreService.getMonstreById(id);
-        if (monstre.isPresent()) {
-            monstreService.deleteMonstreById(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<Void> deleteMonstre(@PathVariable String id) {
+        monstreService.deleteUtilisateurById(id);
+        return ResponseEntity.ok().build();
     }
 
-    // Get products with price less than a certain value
-    @Operation(summary = "Recupere les monstres dont le prix est inferieur a une certaine valeur")
-    @GetMapping("/prix/{maxPrix}")
-    public List<Monstre> getMonstresByPrix(@PathVariable int maxPrix) {
-        return monstreService.getMonstresByPrixLessThan(maxPrix);
-    }
-    
-
- 
 }
 
 

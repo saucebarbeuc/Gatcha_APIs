@@ -1,5 +1,6 @@
 package imt.production.dev.Service;
 
+import imt.production.dev.DTO.JoueurDTO;
 import imt.production.dev.Model.Joueur;
 import imt.production.dev.Repository.JoueurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,9 @@ public class JoueurService {
         }
     }
 
-    public Joueur createJoueur(Joueur joueur) {
+    public Joueur createJoueur(JoueurDTO dto) {
+        Joueur joueur = new Joueur();
+        joueur.setName(dto.getUsername());
         joueur.setLevel(0);
         joueur.setExperience(0);
         joueur.setExperienceThreshold(50);
@@ -40,25 +43,37 @@ public class JoueurService {
         return joueurRepository.save(joueur);
     }
 
-    public Joueur updateJoueur(String id, Joueur joueurDetails) {
-        Joueur joueur = joueurRepository.findById(id).orElse(null);
-        if (joueur != null) {
-            joueur.setName(joueurDetails.getName());
-            joueur.setLevel(Math.min(joueurDetails.getLevel(), 50));
-            joueur.setExperience(joueurDetails.getExperience());
-            joueur.setExperienceThreshold(joueurDetails.getExperienceThreshold());
+    // public Joueur updateJoueur(String id, Joueur joueurDetails) {
+    //     Joueur joueur = joueurRepository.findById(id).orElse(null);
+    //     if (joueur != null) {
+    //         joueur.setName(joueurDetails.getName());
+    //         joueur.setLevel(Math.min(joueurDetails.getLevel(), 50));
+    //         joueur.setExperience(joueurDetails.getExperience());
+    //         joueur.setExperienceThreshold(joueurDetails.getExperienceThreshold());
 
-            int maxMonsters = 10 + joueur.getLevel();
-            if (joueurDetails.getMonsters().size() > maxMonsters) {
-                joueur.setMonsters(new ArrayList<>(joueurDetails.getMonsters().subList(0, maxMonsters)));
-            } else {
-                joueur.setMonsters(joueurDetails.getMonsters());
-            }
+    //         int maxMonsters = 10 + joueur.getLevel();
+    //         if (joueurDetails.getMonsters().size() > maxMonsters) {
+    //             joueur.setMonsters(new ArrayList<>(joueurDetails.getMonsters().subList(0, maxMonsters)));
+    //         } else {
+    //             joueur.setMonsters(joueurDetails.getMonsters());
+    //         }
 
-            return joueurRepository.save(joueur);
+    //         return joueurRepository.save(joueur);
+    //     }
+    //     return null;
+    // }
+
+    public Joueur updateJoueur(String id, JoueurDTO dto) {
+        Optional<Joueur> joueur = joueurRepository.findById(id);
+
+        if (joueur.isPresent()) {
+            joueur.get().setName(dto.getUsername());
+            joueurRepository.save(joueur.get());
+            return joueur.get();
         }
-        return null;
-    }
+
+        return  null;
+}
 
     public void deleteJoueur(String id) {
         joueurRepository.deleteById(id);

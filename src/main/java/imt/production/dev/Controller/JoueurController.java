@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import imt.production.dev.DTO.JoueurDTO;
 import imt.production.dev.Model.Joueur;
 import imt.production.dev.Service.JoueurService;
 
@@ -46,13 +47,13 @@ public class JoueurController {
 
     @Operation(summary = "Créer un nouveau joueur")
     @PostMapping
-    public Joueur createJoueur(@RequestBody Joueur joueur) {
+    public Joueur createJoueur(@RequestBody JoueurDTO joueur) {
         return joueurService.createJoueur(joueur);
     }
 
     @Operation(summary = "Mettre à jour un joueur")
     @PutMapping("/{id}")
-    public ResponseEntity<Joueur> updateJoueur(@PathVariable String id, @RequestBody Joueur joueurDetails) {
+    public ResponseEntity<Joueur> updateJoueur(@PathVariable String id, @RequestBody JoueurDTO joueurDetails) {
         Joueur updatedJoueur = joueurService.updateJoueur(id, joueurDetails);
         if (updatedJoueur != null) {
             return ResponseEntity.ok(updatedJoueur);

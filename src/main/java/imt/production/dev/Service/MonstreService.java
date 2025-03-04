@@ -5,7 +5,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.List;
+import java.util.Map;
 
+import imt.production.dev.DTO.MonstreDTO;
+import imt.production.dev.Errors.HTTP_404.MonstreIdNonExistantException;
+import imt.production.dev.Errors.HTTP_404.UtilisateurIdInexistantException;
 import imt.production.dev.Model.Monstre;
 import imt.production.dev.Repository.MonstreRepository;
 
@@ -15,23 +19,38 @@ public class MonstreService {
     @Autowired
     private MonstreRepository monstreRepository;
 
-    public Monstre createMonstre(Monstre monstre) {
-        return monstreRepository.save(monstre);
-    }
-
-    public Optional<Monstre> getMonstreById(int id) {
-        return monstreRepository.findById(id);
-    }
-
-    public List<Monstre> getMonstresByPrixLessThan(int prix) {
-        return monstreRepository.findByPrixLessThan(prix);
-    }
-
     public List<Monstre> getAllMonstres() {
         return monstreRepository.findAll();
     }
 
-    public void deleteMonstreById(int id) {
+    public Map<String, String> createMonstre(MonstreDTO dto) {
+        Monstre monstre = monstreRepository.save(new Monstre(dto.getNom(), dto.getDescription()));
+        return Map.of("id", monstre.getId());
+    }
+
+    public Optional<Monstre> getMonstreById(String id) {
+        return monstreRepository.findById(id);
+    }
+
+    public Map<String, String> updateMonstre(String id, MonstreDTO dto) {
+        Optional<Monstre> monstre = monstreRepository.findById(id);
+        
+        if (!monstre.isPresent()) {
+            throw new MonstreIdNonExistantException("L'id donné ne correspond à aucun monstre.");
+        }
+
+        monstre.get().setNom(dto.getNom());
+        monstre.get().setDescription(dto.getNom());
+
+        monstreRepository.save(monstre.get());
+        return Map.of("id", monstre.get().getId());
+    }
+
+    public void deleteUtilisateurById(String id) {
+        if (!monstreRepository.existsById(id)) {
+            throw new UtilisateurIdInexistantException("Id inexistant.");
+        }
         monstreRepository.deleteById(id);
     }
+
 }
