@@ -18,9 +18,42 @@ services:
       start_period: 10s
       test: ["CMD", "mongosh", "--quiet", "127.0.0.1/admin", "--eval", "'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)'"]
 
-  spring-api:
+  auth-api:
     build:
-      context: ./
+      context: ./auth-service
+    ports:
+      - "8081:8080"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - app
+      
+  joueur-api:
+    build:
+      context: ./joueur-service
+    ports:
+      - "8082:8080"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - app
+      
+  monstre-api:
+    build:
+      context: ./monstre-service
+    ports:
+      - "8083:8080"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - app
+
+  frontend:
+    build:
+      context: ./front-service
     ports:
       - "8080:8080"
     depends_on:
@@ -28,8 +61,6 @@ services:
         condition: service_healthy
     networks:
       - app
-    volumes:
-      - ~/.m2:/root/.m2  # Cache Maven
 
 networks:
   app:
