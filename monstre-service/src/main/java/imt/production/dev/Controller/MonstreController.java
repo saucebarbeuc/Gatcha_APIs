@@ -2,6 +2,8 @@ package imt.production.dev.Controller;
 
 import imt.production.dev.Dto.MonstreDto;
 import imt.production.dev.Service.MonstreService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/monstres")
+@Tag(name = "Monstres", description = "Gestion des monstres")
 public class MonstreController {
 
     private final MonstreService monstreService;

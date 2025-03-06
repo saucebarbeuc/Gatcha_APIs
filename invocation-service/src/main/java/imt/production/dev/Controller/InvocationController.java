@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/invocations")
-@Tag(name = "Invocations", description = "Gestion des invcations")
+@Tag(name = "Invocations", description = "Gestion des invocations")
 public class InvocationController {
 
     @GetMapping("/test")
