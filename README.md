@@ -11,6 +11,9 @@
 - API Endpoint: `http://localhost:8083/api/monstres`
 - Auth Swagger: `http://localhost:8083/swagger-ui.html`
 
+- API Endpoint: `http://localhost:8084/api/invocations`
+- Auth Swagger: `http://localhost:8084/swagger-ui.html`
+
 ## Docker
 
 To run the project, you need to have Docker installed on your machine.
