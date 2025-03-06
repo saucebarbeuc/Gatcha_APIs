@@ -1,4 +1,4 @@
-package imt.production.dev.DTO;
+package imt.production.dev.Dto;
 
 import jakarta.validation.constraints.NotBlank;
 

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import imt.production.dev.DTO.MonstreDTO;
+import imt.production.dev.Dto.MonstreDTO;
 import imt.production.dev.Model.Monstre;
 import imt.production.dev.Service.MonstreService;
 import io.swagger.v3.oas.annotations.Operation;

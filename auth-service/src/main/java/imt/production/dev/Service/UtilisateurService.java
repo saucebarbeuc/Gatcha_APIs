@@ -76,8 +76,8 @@ public class UtilisateurService {
         utilisateur.setDate(dateTime);
         utilisateur.setToken(token);
         
-        joueurRemoteRepository.createJoueur(new JoueurDTO(dto.getUsername()), token);
         utilisateurRepository.save(utilisateur);
+        joueurRemoteRepository.createJoueur(new JoueurDTO(dto.getUsername()), token);
 
         return Map.of("id", utilisateurRepository.save(utilisateur).getId());
     }

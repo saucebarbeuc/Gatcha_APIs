@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.List;
 import java.util.Map;
 
-import imt.production.dev.DTO.MonstreDTO;
+import imt.production.dev.Dto.MonstreDTO;
 import imt.production.dev.Errors.HTTP_404.MonstreIdNonExistantException;
 import imt.production.dev.Model.Monstre;
 import imt.production.dev.Repository.MonstreRepository;
