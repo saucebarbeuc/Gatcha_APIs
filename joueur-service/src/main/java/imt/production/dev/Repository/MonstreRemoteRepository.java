@@ -2,7 +2,7 @@ package imt.production.dev.Repository;
 
 import java.util.Arrays;
 
-import imt.production.dev.DTO.MonstreDTO;
+import imt.production.dev.Dto.MonstreDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Repository;
@@ -25,16 +25,16 @@ public class MonstreRemoteRepository implements MonstreCustomRepository {
         HttpEntity<String> requestEntity = new HttpEntity<>(monstreId, headers);
 
         try {
-            ResponseEntity<MonstreDTO> response = restTemplate.exchange(
+            ResponseEntity<MonstreDto> response = restTemplate.exchange(
                     monstreApiUrl + '/' + monstreId,
                     HttpMethod.GET,
                     requestEntity,
-                    MonstreDTO.class
+                    MonstreDto.class
             );
 
-            return response.getBody().getNom();
+            return monstreId;
         } catch (RuntimeException e) {
-            throw new RuntimeException("Monstre " + monstreId + " could not be acquired", e);
+            throw new RuntimeException("Monstre " + monstreId + " n'éxiste pas.", e);
         }
     }
 

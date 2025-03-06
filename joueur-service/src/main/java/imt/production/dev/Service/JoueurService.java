@@ -1,8 +1,6 @@
 package imt.production.dev.Service;
 
 import imt.production.dev.Dto.JoueurDto;
-import imt.production.dev.DTO.MonstreDTO;
-import imt.production.dev.DTO.UtilisateurDTO;
 import imt.production.dev.Errors.HTTP_409.UtilisateurDejaExistantException;
 import imt.production.dev.Model.Joueur;
 import imt.production.dev.Repository.JoueurRepository;
@@ -102,12 +100,9 @@ public class JoueurService {
             return null;
         }
         int maxMonsters = 10 + joueur.getLevel();
-        String monstreName = monstreCustomRepository.monstreExist(monsterId, token);
-        if (monstreName == null) {
-            return null;
-        }
+        String monstreId = monstreCustomRepository.monstreExist(monsterId, token);
         if (joueur.getMonsters().size() < maxMonsters) {
-            joueur.getMonsters().add(monsterId);
+            joueur.getMonsters().add(monstreId);
             return joueurRepository.save(joueur);
         }
         return joueur;

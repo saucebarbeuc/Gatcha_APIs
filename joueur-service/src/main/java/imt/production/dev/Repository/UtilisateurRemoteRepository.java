@@ -1,6 +1,6 @@
 package imt.production.dev.Repository;
 
-import imt.production.dev.DTO.UtilisateurDTO;
+import imt.production.dev.Dto.UtilisateurDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
