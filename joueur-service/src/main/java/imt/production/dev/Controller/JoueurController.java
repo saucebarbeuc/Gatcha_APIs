@@ -36,6 +36,13 @@ public class JoueurController {
         return joueur.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Récupérer la liste d'ID de monstres")
+    @GetMapping("/{id}/monsters")
+    public ResponseEntity<List<String>> getMonstersById(@PathVariable String id) {
+        Optional<List<String>> monsters = joueurService.getJoueurMonstersById(id);
+        return monsters.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @Operation(summary = "Récupérer le niveau d'un joueur")
     @GetMapping("/level/{id}")
     public ResponseEntity<Integer> getJoueurLevel(@PathVariable String id) {

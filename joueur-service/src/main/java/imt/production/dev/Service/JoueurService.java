@@ -27,6 +27,11 @@ public class JoueurService {
         return joueurRepository.findById(id);
     }
 
+    public Optional<List<String>> getJoueurMonstersById(String id) {
+        return joueurRepository.findById(id)
+                .map(joueur -> Optional.ofNullable(joueur.getMonsters())
+                        .orElse(List.of()));
+    }
     public JoueurDto createJoueur(JoueurDto dto) {
         Joueur joueur = new Joueur();
         joueur.setName(dto.getUsername());
