@@ -1,67 +1,53 @@
 package imt.production.dev.Controller;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import imt.production.dev.Dto.MonstreDto;
-import imt.production.dev.Model.Monstre;
 import imt.production.dev.Service.MonstreService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/monstres")
-@Tag(name = "Monstres", description = "Gestion des monstres")
 public class MonstreController {
 
-    @Autowired
-    private MonstreService monstreService;
+    private final MonstreService monstreService;
 
-    @Operation(summary = "Récupérer tous les monstres")
+    public MonstreController(MonstreService monstreService) {
+        this.monstreService = monstreService;
+    }
+
     @GetMapping
-    public List<Monstre> getAllMonstres(HttpServletRequest request) {
-        // String username = (String) request.getAttribute("username");
-        return monstreService.getAllMonstres();
+    public ResponseEntity<List<MonstreDto>> getMonstres() {
+        return ResponseEntity.ok(monstreService.getAllMonstres());
     }
 
-    @Operation(summary = "Créer un nouveau monstre")
-    @PostMapping
-    public ResponseEntity<Map<String, String>> createMonstre(@Valid @RequestBody MonstreDto dto, HttpServletRequest request) {
-        // String username = (String) request.getAttribute("username");
-
-        return ResponseEntity.ok(monstreService.createMonstre(dto));
-    }
-
-    @Operation(summary = "Récupérer un monstre par son ID")
     @GetMapping("/{id}")
-    public ResponseEntity<Monstre> getMonstreById(@PathVariable String id) {
-        Optional<Monstre> monstre = monstreService.getMonstreById(id);
-        return monstre.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<MonstreDto> getMonstre(@PathVariable String id) {
+        return monstreService.getMonstreById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Mettre à jour un monstre existant")
+    @PostMapping
+    public ResponseEntity<MonstreDto> createMonstre(@RequestBody MonstreDto monstreDto) {
+        return ResponseEntity.status(201).body(monstreService.createMonstre(monstreDto));
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, String>> updateMonstre(@PathVariable String id, @Valid @RequestBody MonstreDto dto) {
-        return ResponseEntity.ok(monstreService.updateMonstre(id, dto));
+    public ResponseEntity<MonstreDto> updateMonstre(@PathVariable String id, @RequestBody MonstreDto monstreDto) {
+        return ResponseEntity.ok(monstreService.updateMonstre(id, monstreDto));
     }
-    
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMonstre(@PathVariable String id) {
+        monstreService.deleteMonstre(id);
+        return ResponseEntity.noContent().build();
+    }
 
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllMonstres() {
+        monstreService.deleteAllMonstres();
+        return ResponseEntity.noContent().build();
+    }
 }
-
-
-
-
