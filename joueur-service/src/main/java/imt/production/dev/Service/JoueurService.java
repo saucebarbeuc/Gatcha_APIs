@@ -1,9 +1,14 @@
 package imt.production.dev.Service;
 
 import imt.production.dev.Dto.JoueurDto;
+import imt.production.dev.DTO.MonstreDTO;
+import imt.production.dev.DTO.UtilisateurDTO;
 import imt.production.dev.Errors.HTTP_409.UtilisateurDejaExistantException;
 import imt.production.dev.Model.Joueur;
 import imt.production.dev.Repository.JoueurRepository;
+import imt.production.dev.Repository.MonstreCustomRepository;
+import imt.production.dev.Repository.MonstreRemoteRepository;
+import imt.production.dev.Repository.UtilisateurCustomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +21,10 @@ public class JoueurService {
 
     @Autowired
     private JoueurRepository joueurRepository;
-
-    
+    @Autowired
+    private MonstreCustomRepository monstreCustomRepository;
+    @Autowired
+    private UtilisateurCustomRepository utilisateurCustomRepository;
 
     public List<Joueur> getAllJoueurs() {
         return joueurRepository.findAll();
@@ -85,14 +92,22 @@ public class JoueurService {
         return joueur;
     }
 
-    public Joueur acquireMonster(String id, String monster) {
-        Joueur joueur = joueurRepository.findById(id).orElse(null);
+    public Joueur acquireMonster(String monsterId, String token) {
+        String userName = utilisateurCustomRepository.getUtilisateurNameByToken(token);
+        if (userName == null) {
+            return null;
+        }
+        Joueur joueur = joueurRepository.findByName(userName).orElse(null);
         if (joueur == null) {
             return null;
         }
         int maxMonsters = 10 + joueur.getLevel();
+        String monstreName = monstreCustomRepository.monstreExist(monsterId, token);
+        if (monstreName == null) {
+            return null;
+        }
         if (joueur.getMonsters().size() < maxMonsters) {
-            joueur.getMonsters().add(monster);
+            joueur.getMonsters().add(monsterId);
             return joueurRepository.save(joueur);
         }
         return joueur;

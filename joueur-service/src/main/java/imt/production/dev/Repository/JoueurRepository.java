@@ -9,7 +9,7 @@ import imt.production.dev.Model.Joueur;
 
 @Repository
 public interface JoueurRepository extends MongoRepository<Joueur, String> {
-    Optional<Joueur> findById(String id);
+    Optional<Joueur> findByName(String name);
     void deleteById(String id);
     boolean existsByName(String username);
 

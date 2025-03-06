@@ -98,10 +98,16 @@ public class JoueurController {
         return ResponseEntity.ok(updatedJoueur);
     }
 
+    // /api/joueurs/monsters
+
     @Operation(summary = "Acquérir un nouveau monstre")
-    @PostMapping("/{id}/monsters")
-    public ResponseEntity<Joueur> acquireMonster(@PathVariable String id, @RequestParam String monster) {
-        Joueur updatedJoueur = joueurService.acquireMonster(id, monster);
+    @PostMapping("/monsters")
+    public ResponseEntity<Joueur> acquireMonster(@RequestParam String monster, HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if (token == null) {
+            throw new RuntimeException("No token provided");
+        }
+        Joueur updatedJoueur = joueurService.acquireMonster(monster, token);
         if (updatedJoueur != null) {
             return ResponseEntity.ok(updatedJoueur);
         }
