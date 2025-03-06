@@ -51,5 +51,16 @@ services:
     networks:
       - app
 
+  invocation-api:
+    build:
+      context: ./invocation-service
+    ports:
+      - "8084:8080"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - app
+
 networks:
   app:
