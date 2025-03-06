@@ -12,5 +12,6 @@
         <module>auth-service</module>
         <module>joueur-service</module>
         <module>monstre-service</module>
+        <module>invocation-service</module>
     </modules>
 </project>

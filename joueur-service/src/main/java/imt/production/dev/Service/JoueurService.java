@@ -5,7 +5,6 @@ import imt.production.dev.Errors.HTTP_409.UtilisateurDejaExistantException;
 import imt.production.dev.Model.Joueur;
 import imt.production.dev.Repository.JoueurRepository;
 import imt.production.dev.Repository.MonstreCustomRepository;
-import imt.production.dev.Repository.MonstreRemoteRepository;
 import imt.production.dev.Repository.UtilisateurCustomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

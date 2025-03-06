@@ -25,7 +25,7 @@ public class MonstreRemoteRepository implements MonstreCustomRepository {
         HttpEntity<String> requestEntity = new HttpEntity<>(monstreId, headers);
 
         try {
-            ResponseEntity<MonstreDto> response = restTemplate.exchange(
+            restTemplate.exchange(
                     monstreApiUrl + '/' + monstreId,
                     HttpMethod.GET,
                     requestEntity,
