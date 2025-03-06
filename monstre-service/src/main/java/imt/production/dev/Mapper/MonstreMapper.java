@@ -2,8 +2,6 @@ package imt.production.dev.Mapper;
 
 import imt.production.dev.Dto.MonstreDto;
 import imt.production.dev.Model.Monstre;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 public class MonstreMapper {
 
