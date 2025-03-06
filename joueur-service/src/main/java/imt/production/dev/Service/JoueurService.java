@@ -1,6 +1,6 @@
 package imt.production.dev.Service;
 
-import imt.production.dev.DTO.JoueurDTO;
+import imt.production.dev.Dto.JoueurDto;
 import imt.production.dev.Errors.HTTP_409.UtilisateurDejaExistantException;
 import imt.production.dev.Model.Joueur;
 import imt.production.dev.Repository.JoueurRepository;
@@ -27,7 +27,7 @@ public class JoueurService {
         return joueurRepository.findById(id);
     }
 
-    public JoueurDTO createJoueur(JoueurDTO dto) {
+    public JoueurDto createJoueur(JoueurDto dto) {
         Joueur joueur = new Joueur();
         joueur.setName(dto.getUsername());
         joueur.setLevel(1);
@@ -39,10 +39,10 @@ public class JoueurService {
             throw new UtilisateurDejaExistantException("Joueur déjà existant");
         }
 
-        return new JoueurDTO(joueurRepository.save(joueur).getName());
+        return new JoueurDto(joueurRepository.save(joueur).getName());
     }
 
-    public Joueur updateJoueur(String id, JoueurDTO dto) {
+    public Joueur updateJoueur(String id, JoueurDto dto) {
         Optional<Joueur> joueur = joueurRepository.findById(id);
 
         if (joueur.isPresent()) {

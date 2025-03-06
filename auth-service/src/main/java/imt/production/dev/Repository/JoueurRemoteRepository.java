@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
-import imt.production.dev.DTO.JoueurDTO;
+import imt.production.dev.Dto.JoueurDto;
 
 @Repository
 public class JoueurRemoteRepository implements JoueurCustomRepository {
@@ -18,14 +18,14 @@ public class JoueurRemoteRepository implements JoueurCustomRepository {
     private String joueurApiUrl;
 
     @Override
-    public void createJoueur(JoueurDTO joueur, String token) {
+    public void createJoueur(JoueurDto joueur, String token) {
         RestTemplate restTemplate = new RestTemplate();
         
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.put("Authorization", Arrays.asList(token));
 
-        HttpEntity<JoueurDTO> requestEntity = new HttpEntity<>(joueur, headers);
+        HttpEntity<JoueurDto> requestEntity = new HttpEntity<>(joueur, headers);
 
         try {
             restTemplate.postForObject(joueurApiUrl, requestEntity, Void.class);

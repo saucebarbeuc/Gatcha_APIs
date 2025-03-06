@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import imt.production.dev.DTO.UtilisateurDTO;
+import imt.production.dev.Dto.UtilisateurDto;
 // import imt.production.dev.Model.Utilisateur;
 import imt.production.dev.Service.UtilisateurService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,7 +22,7 @@ public class UtilisateurController {
     private UtilisateurService utilisateurService;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody UtilisateurDTO dto) {
+    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody UtilisateurDto dto) {
         Map<String, String> response = utilisateurService.login(dto);
         return ResponseEntity.ok().body(response);
     }
@@ -41,7 +41,7 @@ public class UtilisateurController {
 
     @Operation(summary = "Créer un nouveau utilisateur")
     @PostMapping
-    public ResponseEntity<Map<String, String>> createUtilisateur(@Valid @RequestBody UtilisateurDTO dto) {
+    public ResponseEntity<Map<String, String>> createUtilisateur(@Valid @RequestBody UtilisateurDto dto) {
         return ResponseEntity.ok(utilisateurService.createUtilisateur(dto));
     }
 

@@ -1,10 +1,10 @@
 package imt.production.dev.Repository;
 
-import imt.production.dev.DTO.JoueurDTO;
+import imt.production.dev.Dto.JoueurDto;
 
 public interface JoueurCustomRepository {
 
-    void createJoueur(JoueurDTO joueur, String token);
+    void createJoueur(JoueurDto joueur, String token);
 
 
 }

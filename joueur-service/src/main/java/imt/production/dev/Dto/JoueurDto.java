@@ -1,13 +1,13 @@
-package imt.production.dev.DTO;
+package imt.production.dev.Dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class JoueurDTO {
+public class JoueurDto {
     
     @NotBlank
     private String username;
 
-    public JoueurDTO(String username) {
+    public JoueurDto(String username) {
         this.username = username;
     }
 

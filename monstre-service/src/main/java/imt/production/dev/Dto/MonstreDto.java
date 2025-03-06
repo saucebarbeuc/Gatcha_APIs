@@ -2,7 +2,7 @@ package imt.production.dev.Dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class MonstreDTO {
+public class MonstreDto {
 
     @NotBlank(message = "Le nom du monstre est obligatoire.")
     private String nom;

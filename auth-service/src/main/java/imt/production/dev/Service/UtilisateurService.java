@@ -9,8 +9,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
-import imt.production.dev.DTO.JoueurDTO;
-import imt.production.dev.DTO.UtilisateurDTO;
+import imt.production.dev.Dto.JoueurDto;
+import imt.production.dev.Dto.UtilisateurDto;
 import imt.production.dev.Errors.HTTP_404.UtilisateurInexsitantException;
 import imt.production.dev.Errors.HTTP_409.UtilisateurDejaExistantException;
 import imt.production.dev.Errors.HTTP_401.TokenExpireException;
@@ -29,7 +29,7 @@ public class UtilisateurService {
     @Autowired
     private JoueurRemoteRepository joueurRemoteRepository;
 
-    public Map<String, String> login(UtilisateurDTO dto) {
+    public Map<String, String> login(UtilisateurDto dto) {
         Optional<Utilisateur> utilisateur = utilisateurRepository.findByUsernameAndPassword(dto.getUsername(), dto.getPassword());
 
         if (utilisateur.isEmpty()) { // return 404
@@ -64,7 +64,7 @@ public class UtilisateurService {
         return Map.of("username", utilisateur.get().getUsername());
     }
 
-    public Map<String, String> createUtilisateur(UtilisateurDTO dto) {
+    public Map<String, String> createUtilisateur(UtilisateurDto dto) {
         if (utilisateurRepository.existsByUsername(dto.getUsername())) { // return 409
             throw new UtilisateurDejaExistantException("Un utilisateur avec ce username existe déjà !");
         }
@@ -77,7 +77,7 @@ public class UtilisateurService {
         utilisateur.setToken(token);
         
         utilisateurRepository.save(utilisateur);
-        joueurRemoteRepository.createJoueur(new JoueurDTO(dto.getUsername()), token);
+        joueurRemoteRepository.createJoueur(new JoueurDto(dto.getUsername()), token);
 
         return Map.of("id", utilisateurRepository.save(utilisateur).getId());
     }

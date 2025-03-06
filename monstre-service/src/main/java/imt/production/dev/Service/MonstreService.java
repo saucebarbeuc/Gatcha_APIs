@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.List;
 import java.util.Map;
 
-import imt.production.dev.Dto.MonstreDTO;
+import imt.production.dev.Dto.MonstreDto;
 import imt.production.dev.Errors.HTTP_404.MonstreIdNonExistantException;
 import imt.production.dev.Model.Monstre;
 import imt.production.dev.Repository.MonstreRepository;
@@ -22,7 +22,7 @@ public class MonstreService {
         return monstreRepository.findAll();
     }
 
-    public Map<String, String> createMonstre(MonstreDTO dto) {
+    public Map<String, String> createMonstre(MonstreDto dto) {
         Monstre monstre = monstreRepository.save(new Monstre(dto.getNom(), dto.getDescription()));
         return Map.of("id", monstre.getId());
     }
@@ -31,7 +31,7 @@ public class MonstreService {
         return monstreRepository.findById(id);
     }
 
-    public Map<String, String> updateMonstre(String id, MonstreDTO dto) {
+    public Map<String, String> updateMonstre(String id, MonstreDto dto) {
         Optional<Monstre> monstre = monstreRepository.findById(id);
         
         if (!monstre.isPresent()) {

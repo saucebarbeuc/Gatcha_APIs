@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import imt.production.dev.DTO.JoueurDTO;
+import imt.production.dev.Dto.JoueurDto;
 import imt.production.dev.Model.Joueur;
 import imt.production.dev.Service.JoueurService;
 
@@ -46,16 +46,16 @@ public class JoueurController {
 
     @Operation(summary = "Créer un nouveau joueur")
     @PostMapping
-    // public ResponseEntity<JoueurDTO> createJoueur(@RequestBody JoueurDTO joueur, HttpServletRequest request) {
-    public ResponseEntity<JoueurDTO> createJoueur(HttpServletRequest request) {
+    // public ResponseEntity<JoueurDto> createJoueur(@RequestBody JoueurDto joueur, HttpServletRequest request) {
+    public ResponseEntity<JoueurDto> createJoueur(HttpServletRequest request) {
         String username = (String) request.getAttribute("username");
-        JoueurDTO newJoueur = joueurService.createJoueur(new JoueurDTO(username));
+        JoueurDto newJoueur = joueurService.createJoueur(new JoueurDto(username));
         return ResponseEntity.ok(newJoueur);
     }
 
     @Operation(summary = "Mettre à jour un joueur")
     @PutMapping("/{id}")
-    public ResponseEntity<Joueur> updateJoueur(@PathVariable String id, @RequestBody JoueurDTO joueurDetails) {
+    public ResponseEntity<Joueur> updateJoueur(@PathVariable String id, @RequestBody JoueurDto joueurDetails) {
         Joueur updatedJoueur = joueurService.updateJoueur(id, joueurDetails);
         if (updatedJoueur != null) {
             return ResponseEntity.ok(updatedJoueur);

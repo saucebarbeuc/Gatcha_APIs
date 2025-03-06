@@ -1,8 +1,8 @@
-package imt.production.dev.DTO;
+package imt.production.dev.Dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class UtilisateurDTO {
+public class UtilisateurDto {
 
     @NotBlank
     private String username;

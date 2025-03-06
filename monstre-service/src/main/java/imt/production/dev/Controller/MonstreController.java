@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import imt.production.dev.Dto.MonstreDTO;
+import imt.production.dev.Dto.MonstreDto;
 import imt.production.dev.Model.Monstre;
 import imt.production.dev.Service.MonstreService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,7 +39,7 @@ public class MonstreController {
 
     @Operation(summary = "Créer un nouveau monstre")
     @PostMapping
-    public ResponseEntity<Map<String, String>> createMonstre(@Valid @RequestBody MonstreDTO dto, HttpServletRequest request) {
+    public ResponseEntity<Map<String, String>> createMonstre(@Valid @RequestBody MonstreDto dto, HttpServletRequest request) {
         // String username = (String) request.getAttribute("username");
 
         return ResponseEntity.ok(monstreService.createMonstre(dto));
@@ -54,7 +54,7 @@ public class MonstreController {
 
     @Operation(summary = "Mettre à jour un monstre existant")
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, String>> updateMonstre(@PathVariable String id, @Valid @RequestBody MonstreDTO dto) {
+    public ResponseEntity<Map<String, String>> updateMonstre(@PathVariable String id, @Valid @RequestBody MonstreDto dto) {
         return ResponseEntity.ok(monstreService.updateMonstre(id, dto));
     }
     
