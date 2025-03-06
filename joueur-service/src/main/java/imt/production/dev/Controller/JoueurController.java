@@ -37,14 +37,12 @@ public class JoueurController {
     }
 
     @Operation(summary = "Récupérer le niveau d'un joueur")
-    @GetMapping("/{id}/level")
-    public ResponseEntity<Joueur> getLevelById(@PathVariable String id) {
-        Optional<Joueur> joueur = joueurService.getLevelById(id);
-        if (joueur != null) {
-            return ResponseEntity.ok(null);
-        }
-        return ResponseEntity.notFound().build();
+    @GetMapping("/level/{id}")
+    public ResponseEntity<Integer> getJoueurLevel(@PathVariable String id) {
+        Optional<Joueur> joueur = joueurService.getJoueurById(id);
+        return joueur.map(j -> ResponseEntity.ok(j.getLevel())).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
 
     @Operation(summary = "Créer un nouveau joueur")
     @PostMapping

@@ -27,15 +27,6 @@ public class JoueurService {
         return joueurRepository.findById(id);
     }
 
-    public Optional<Joueur> getLevelById(String id) {
-        Joueur joueur = joueurRepository.findById(id).orElse(null);
-        if (joueur == null) {
-            return null;
-        } else {
-            return Optional.empty();
-        }
-    }
-
     public JoueurDTO createJoueur(JoueurDTO dto) {
         Joueur joueur = new Joueur();
         joueur.setName(dto.getUsername());
