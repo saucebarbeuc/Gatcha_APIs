@@ -17,6 +17,5 @@ public class InvocationBackup {
     private Invocation savedInvocation;
     private int calcul;
     private String idMonstre;
-
     
 }

@@ -28,4 +28,14 @@ public class Invocation {
     private Stats stats;
     private List<Competence> competences;
 
+    
+    public Invocation(int taux, TypeElementaire type, Stats stats, List<Competence> competences) {
+        this.taux = taux;
+        this.type = type;
+        this.stats = stats;
+        this.competences = competences;
+    }
+
+
+
 }

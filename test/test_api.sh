@@ -1,5 +1,3 @@
-#!/bin/bash
-
 if [ "$#" -ne 2 ]; then
 	echo "Usage: $0 <username> <password>"
 	exit 1
@@ -31,6 +29,3 @@ curl -s -X POST http://localhost:8080/api/monstres \
   "nom": "monstre",
   "description": "ceci est un gros monstresssssss"
 }' | jq
-
-
-
