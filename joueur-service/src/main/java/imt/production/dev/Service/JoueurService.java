@@ -5,7 +5,6 @@ import imt.production.dev.Errors.HTTP_409.UtilisateurDejaExistantException;
 import imt.production.dev.Model.Joueur;
 import imt.production.dev.Repository.JoueurRepository;
 import imt.production.dev.Repository.MonstreCustomRepository;
-import imt.production.dev.Repository.UtilisateurCustomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +19,6 @@ public class JoueurService {
     private JoueurRepository joueurRepository;
     @Autowired
     private MonstreCustomRepository monstreCustomRepository;
-    @Autowired
-    private UtilisateurCustomRepository utilisateurCustomRepository;
 
     public List<Joueur> getAllJoueurs() {
         return joueurRepository.findAll();
@@ -31,11 +28,12 @@ public class JoueurService {
         return joueurRepository.findById(id);
     }
 
-    public Optional<List<String>> getJoueurMonstersById(String id) {
-        return joueurRepository.findById(id)
+    public Optional<List<String>> getJoueurMonstersByName(String username) {
+        return joueurRepository.findByName(username)
                 .map(joueur -> Optional.ofNullable(joueur.getMonsters())
                         .orElse(List.of()));
     }
+    
     public JoueurDto createJoueur(JoueurDto dto) {
         Joueur joueur = new Joueur();
         joueur.setName(dto.getUsername());
@@ -89,12 +87,9 @@ public class JoueurService {
         return joueur;
     }
 
-    public Joueur acquireMonster(String monsterId, String token) {
-        String userName = utilisateurCustomRepository.getUtilisateurNameByToken(token);
-        if (userName == null) {
-            return null;
-        }
-        Joueur joueur = joueurRepository.findByName(userName).orElse(null);
+    public JoueurDto acquireMonster(String monsterId, String token, String username) {
+        // String userName = utilisateurCustomRepository.getUtilisateurNameByToken(token);
+        Joueur joueur = joueurRepository.findByName(username).orElse(null);
         if (joueur == null) {
             return null;
         }
@@ -102,9 +97,10 @@ public class JoueurService {
         String monstreId = monstreCustomRepository.monstreExist(monsterId, token);
         if (joueur.getMonsters().size() < maxMonsters) {
             joueur.getMonsters().add(monstreId);
-            return joueurRepository.save(joueur);
+            // return new JoueurDto(username);
+            return new JoueurDto(joueurRepository.save(joueur).getName()); // TODO verif username = null
         }
-        return joueur;
+        return new JoueurDto(joueur.getName());
     }
 
     public Joueur removeMonster(String id, String monster) {

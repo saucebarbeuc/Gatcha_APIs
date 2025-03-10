@@ -37,9 +37,10 @@ public class JoueurController {
     }
 
     @Operation(summary = "Récupérer la liste d'ID de monstres")
-    @GetMapping("/{id}/monsters")
-    public ResponseEntity<List<String>> getMonstersById(@PathVariable String id) {
-        Optional<List<String>> monsters = joueurService.getJoueurMonstersById(id);
+    @GetMapping("/monsters")
+    public ResponseEntity<List<String>> getMonstersById(HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        Optional<List<String>> monsters = joueurService.getJoueurMonstersByName(username);
         return monsters.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -53,7 +54,6 @@ public class JoueurController {
 
     @Operation(summary = "Créer un nouveau joueur")
     @PostMapping
-    // public ResponseEntity<JoueurDto> createJoueur(@RequestBody JoueurDto joueur, HttpServletRequest request) {
     public ResponseEntity<JoueurDto> createJoueur(HttpServletRequest request) {
         String username = (String) request.getAttribute("username");
         JoueurDto newJoueur = joueurService.createJoueur(new JoueurDto(username));
@@ -98,16 +98,12 @@ public class JoueurController {
         return ResponseEntity.ok(updatedJoueur);
     }
 
-    // /api/joueurs/monsters
-
     @Operation(summary = "Acquérir un nouveau monstre")
     @PostMapping("/monsters")
-    public ResponseEntity<Joueur> acquireMonster(@RequestParam String monster, HttpServletRequest request) {
+    public ResponseEntity<JoueurDto> acquireMonster(@RequestParam String monster, HttpServletRequest request) {
         String token = request.getHeader("Authorization");
-        if (token == null) {
-            throw new RuntimeException("No token provided");
-        }
-        Joueur updatedJoueur = joueurService.acquireMonster(monster, token);
+        String username = (String) request.getAttribute("username");
+        JoueurDto updatedJoueur = joueurService.acquireMonster(monster, token, username);
         if (updatedJoueur != null) {
             return ResponseEntity.ok(updatedJoueur);
         }

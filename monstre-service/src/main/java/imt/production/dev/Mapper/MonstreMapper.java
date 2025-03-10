@@ -10,7 +10,6 @@ public class MonstreMapper {
             return null;
         }
         return new MonstreDto(
-                monstre.getId(),
                 monstre.getNom(),
                 monstre.getNiveau(),
                 monstre.getExperiences(),
@@ -25,7 +24,6 @@ public class MonstreMapper {
             return null;
         }
         return new Monstre(
-                monstreDto.getId(),
                 monstreDto.getNom(),
                 monstreDto.getNiveau(),
                 monstreDto.getExperiences(),

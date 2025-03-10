@@ -1,58 +1,45 @@
 package imt.production.dev.Controller;
 
-import java.util.Map;
+import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import imt.production.dev.Dto.InvocationDto;
+import imt.production.dev.Dto.JoueurDto;
+import imt.production.dev.Model.InvocationBackup;
+import imt.production.dev.Service.InvocationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/invocations")
-@Tag(name = "Invocations", description = "Gestion des invocations")
+@Tag(name = "Invocation", description = "Gestion des invocations")
 public class InvocationController {
 
-    @GetMapping("/test")
-    public ResponseEntity<Map<String, String>> validate(@RequestParam String token) {
-        Map<String, String> response = Map.of("info", "test");
-        return ResponseEntity.ok().body(response);
+    InvocationService invocationService;
+
+    public InvocationController(InvocationService invocationService) {
+        this.invocationService = invocationService;
     }
 
-    // @Autowired
-    // private UtilisateurService utilisateurService;
+    @Operation(summary = "Invoque un monstre")
+    @PostMapping()
+    public ResponseEntity<JoueurDto> invoque(HttpServletRequest request, @Valid @RequestBody InvocationDto dto) {
+        String token = request.getHeader("Authorization");
+        String username = (String) request.getAttribute("username");
+        return ResponseEntity.ok(invocationService.invoque(dto, token, username));
+    }
 
-    // @PostMapping("/login")
-    // public ResponseEntity<Map<String, String>> login(@Valid @RequestBody UtilisateurDTO dto) {
-    //     Map<String, String> response = utilisateurService.login(dto);
-    //     return ResponseEntity.ok().body(response);
-    // }
+    @Operation(summary = "Rejoue les invocations stoppées")
+    @PostMapping("/recup")
+    public ResponseEntity<List<InvocationBackup>> recup(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        String username = (String) request.getAttribute("username");
+        List<InvocationBackup> recups = invocationService.recup(token, username);
 
-    // @GetMapping("/validate")
-    // public ResponseEntity<Map<String, String>> validate(@RequestParam String token) {
-    //     Map<String, String> response = utilisateurService.validate(token);
-    //     return ResponseEntity.ok().body(response);
-    // }
-
-    // // @Operation(summary = "Récupérer tous les utilisateurs")
-    // // @GetMapping
-    // // public List<Utilisateur> getAllUtilisateurs() {
-    // //     return utilisateurService.getAllUtilisateurs();
-    // // }
-
-    // @Operation(summary = "Créer un nouveau utilisateur")
-    // @PostMapping
-    // public ResponseEntity<Map<String, String>> createUtilisateur(@Valid @RequestBody UtilisateurDTO dto) {
-    //     return ResponseEntity.ok(utilisateurService.createUtilisateur(dto));
-    // }
-
-    // @Operation(summary = "Supprimer un utilisateur par son ID")
-    // @DeleteMapping("/{id}")
-    // public ResponseEntity<Void> deleteUtilisateur(@PathVariable String id) {
-    //     utilisateurService.deleteUtilisateurById(id);
-    //     return ResponseEntity.ok().build();
-    // }
-
+        return ResponseEntity.ok(recups);
+    }    
 }

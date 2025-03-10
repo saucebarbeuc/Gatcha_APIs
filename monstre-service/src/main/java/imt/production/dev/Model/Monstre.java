@@ -23,4 +23,15 @@ public class Monstre {
     private TypeElementaire typeElementaire;
     private Stats stats;
     private List<Competence> competences;
+
+    public Monstre(String nom, int niveau, int experiences, TypeElementaire typeElementaire, Stats stats,
+            List<Competence> competences) {
+        this.nom = nom;
+        this.niveau = niveau;
+        this.experiences = experiences;
+        this.typeElementaire = typeElementaire;
+        this.stats = stats;
+        this.competences = competences;
+    }
+    
 }

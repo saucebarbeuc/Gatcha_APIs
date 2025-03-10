@@ -8,6 +8,7 @@ import imt.production.dev.Service.MonstreService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -21,10 +22,8 @@ public class MonstreServiceImpl implements MonstreService {
     }
 
     @Override
-    public MonstreDto createMonstre(MonstreDto monstreDto) {
-        Monstre monstre = MonstreMapper.toEntity(monstreDto);
-        Monstre savedMonstre = monstreRepository.save(monstre);
-        return MonstreMapper.toDto(savedMonstre);
+    public Map<String, String> createMonstre(MonstreDto monstreDto) {
+        return Map.of("id", monstreRepository.save(MonstreMapper.toEntity(monstreDto)).getId()) ;
     }
 
     @Override
