@@ -1,7 +1,7 @@
 package imt.production.dev.Dto;
 
-import imt.production.dev.Enum.TypeElementaire;
-import imt.production.dev.Model.Stats;
+import imt.production.dev.Utils.Stats;
+import imt.production.dev.Utils.TypeElementaire;
 import lombok.*;
 
 import java.util.List;

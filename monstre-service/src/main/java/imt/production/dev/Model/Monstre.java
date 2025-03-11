@@ -1,9 +1,11 @@
 package imt.production.dev.Model;
 
-import imt.production.dev.Enum.TypeElementaire;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import imt.production.dev.Utils.Stats;
+import imt.production.dev.Utils.TypeElementaire;
 
 import java.util.List;
 
