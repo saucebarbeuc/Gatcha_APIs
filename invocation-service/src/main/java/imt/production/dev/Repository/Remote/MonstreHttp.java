@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import imt.production.dev.Dto.MonstreDto;
+import imt.production.dev.Dto.MonstreUtils.MonstreDto;
 
 @Component
 public class MonstreHttp {

@@ -1,4 +1,4 @@
-package imt.production.dev.Utils;
+package imt.production.dev.Dto.MonstreUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Competence {
+public class CompetenceDto {
 
     private String nom;
     private int degatsBase;
