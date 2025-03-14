@@ -16,7 +16,7 @@ public class MonstreResource {
     private int def;
     private int vit;
     private List<Competence> skills;
-    private float lootRate;
+    private double lootRate;
 
     
 
