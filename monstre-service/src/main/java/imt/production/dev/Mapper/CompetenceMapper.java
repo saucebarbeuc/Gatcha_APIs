@@ -16,7 +16,6 @@ public class CompetenceMapper {
                 competence.getDegatsBase(),
                 competence.getRatioDegats(),
                 competence.getCooldown(),
-                competence.getNiveau(),
                 competence.getNiveauMax()
         );
     }
@@ -30,7 +29,7 @@ public class CompetenceMapper {
                 competenceDto.getDegatsBase(),
                 competenceDto.getRatioDegats(),
                 competenceDto.getCooldown(),
-                competenceDto.getNiveau(),
+                1,
                 competenceDto.getNiveauMax()
         );
     }

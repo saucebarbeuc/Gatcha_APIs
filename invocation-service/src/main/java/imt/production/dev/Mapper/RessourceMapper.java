@@ -15,19 +15,16 @@ public class RessourceMapper {
         List<CompetenceDto> skills = new ArrayList<>();
         model.getSkills().forEach(skill -> {
             skills.add(new CompetenceDto(
-                "",
+                "Competence de " + skill.getRatio().getStat(),
                 skill.getDmg(),
                 skill.getRatio().getPercent(),
                 skill.getCooldown(),
-                -1,
                 skill.getLvlMax()
             ));
         });
 
         return new MonstreDto(
-            "",
-            -1,
-            -1,
+            "Monstre de " + model.getElement(),
             TypeElementaire.fromString(model.getElement()),
             new Stats(
                 model.getHp(),

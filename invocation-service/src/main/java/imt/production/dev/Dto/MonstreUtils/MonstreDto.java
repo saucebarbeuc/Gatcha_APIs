@@ -13,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class MonstreDto { 
 
     private String nom;
-    private int niveau;
-    private int experiences;
     private TypeElementaire typeElementaire;
     private Stats stats;
     private List<CompetenceDto> competences;

@@ -14,6 +14,5 @@ public class CompetenceDto {
     private int degatsBase;
     private double ratioDegats;
     private int cooldown;
-    private int niveau;
     private int niveauMax;
 }

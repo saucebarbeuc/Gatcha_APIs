@@ -11,8 +11,6 @@ public class MonstreMapper {
         }
         return new MonstreDto(
                 monstre.getNom(),
-                monstre.getNiveau(),
-                monstre.getExperiences(),
                 monstre.getTypeElementaire(),
                 monstre.getStats(),
                 CompetenceMapper.toDtoList(monstre.getCompetences())
@@ -25,8 +23,8 @@ public class MonstreMapper {
         }
         return new Monstre(
                 monstreDto.getNom(),
-                monstreDto.getNiveau(),
-                monstreDto.getExperiences(),
+                1,
+                0,
                 monstreDto.getTypeElementaire(),
                 monstreDto.getStats(),
                 CompetenceMapper.toEntityList(monstreDto.getCompetences())
