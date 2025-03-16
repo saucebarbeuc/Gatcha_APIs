@@ -115,13 +115,18 @@ Testé sur 10000 lancé avec une marge d'erreur de 1.5%
 
 - DELETE - /api/monstres - Delete All
 
-#### Front
+## Front
+ 
+Plusieurs front sont disponibles sur les routes : 'http://localhost:8081/index.html' et 'http://localhost:8084/index.html'. Elles permettent :
 
-Un front est disponible sur la route : 'http://localhost:8081/index.html'. Il permet de :
+Pour 'http://localhost:8081/index.html' :
 
-- créer un compte utilisateur ✅
-- se connecter à un compte utilisateur en ayant un token ✅
-- récupérer les informations du joueur de l'utilisateur ❌ (problème de CORS)
-- créer un monstre ❌ (problème de CORS)
-- voir tous les monstres ❌ (problème de CORS)
+- de créer un compte utilisateur
+- de se connecter à un compte utilisateur en ayant un token
+
+Pour 'http://localhost:8084/index.html' :
+- d'invoquer un monstre
+
+Pour que les fronts fonctionnent correctement, il est nécessaire de lancer les containers.
+Pour pouvoir invoquer un monstre dans le front Invocation, il faut au préalable copier le Token utilisateur généré lors de la connexion dans le front Authentification.
 

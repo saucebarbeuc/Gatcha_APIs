@@ -18,7 +18,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/joueurs")
 @Tag(name = "Joueur", description = "API pour gérer les joueurs")
-@CrossOrigin(origins = "http://localhost:8081", allowedHeaders = "*", allowCredentials = "true")
 public class JoueurController {
 
     @Autowired

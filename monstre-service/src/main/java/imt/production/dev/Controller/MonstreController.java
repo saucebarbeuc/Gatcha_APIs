@@ -14,7 +14,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/monstres")
 @Tag(name = "Monstres", description = "Gestion des monstres")
-@CrossOrigin(origins = "http://localhost:8081", allowedHeaders = "*", allowCredentials = "true")
 public class MonstreController {
 
     private final MonstreService monstreService;

@@ -1,17 +1,20 @@
 const API_MONSTER = 'http://localhost:8083/api/monstres';
 const API_JOUEUR = 'http://localhost:8082/api/joueurs';
 const API_AUTH = 'http://localhost:8081/api/users';
+const API_INVOCATION = 'http://localhost:8084/api/invocations';
 
 let error = document.getElementById('error');
 
 let form_register = document.getElementById('form-register');
 let form_login = document.getElementById('form-login');
 let get_joueur = document.getElementById('get-joueur');
+let get_invocation = document.getElementById('get-invocation');
 let form_monster = document.getElementById('form-monster');
 let get_monsters = document.getElementById('get-monsters');
 
 let readall_monster_response = document.getElementById('readall-monster-response');
 let readall_joueur_response = document.getElementById('readall-joueur-response');
+let readall_invocation_response = document.getElementById('readall-invocation-response');
 let connected = document.getElementById('connected');
 
 connected.innerText = "Non Connecté";
@@ -117,10 +120,9 @@ get_monsters.addEventListener('click', async (e) => {
 get_joueur.addEventListener('click', async (e) => {
     try {
         let response = await fetch(API_JOUEUR, {
-            mode: 'no-cors',
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': token
             },
         });
 
@@ -139,5 +141,33 @@ get_joueur.addEventListener('click', async (e) => {
         }
     } catch (error) {
         error.innerText = `Erreur lors de la récupération des joueurs: ${error.message}`;
+    }
+});
+
+get_invocation.addEventListener('click', async (e) => {
+    try {
+        let response = await fetch(API_INVOCATION, {
+            mode: 'no-cors',
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.status !== 200) {
+            let data = await response.json();
+            error.innerText = `${response.status} - ${Object.entries(data)[0][0]}: ${Object.entries(data)[0][1]}`;
+        } else {
+            let data = await response.json();
+            readall_invocation_response.innerText = "";
+
+            data.forEach(element => {
+                let li = document.createElement('li');
+                li.innerText = `${element.nom}: ${element.description}`;
+                readall_invocation_response.appendChild(li);
+            });
+        }
+    } catch (error) {
+        error.innerText = `Erreur lors de la récupération des invocations: ${error.message}`;
     }
 });
