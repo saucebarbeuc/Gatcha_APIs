@@ -90,7 +90,7 @@ Testé sur 10000 lancé avec une marge d'erreur de 1.5%
 - GET - /api/joueurs/monsters - Récupérer la liste d'ID de monstres
 
 - POST - /api/joueurs/monsters - Acquérir un nouveau monstre
-1) Ajouer sécuritée pour qu'un joueur ne puisse pas ajouter n'importe quel monstre à sa liste si il connait sont ID.
+1) Ajouter sécuritée pour qu'un joueur ne puisse pas ajouter n'importe quel monstre à sa liste si il connait sont ID.
 
 - GET - /api/joueurs/level/{id} - Récupérer le niveau d'un joueur
 
@@ -111,4 +111,14 @@ Testé sur 10000 lancé avec une marge d'erreur de 1.5%
 1) Ajoutée sécuritée pour que la création passe uniquement par l'api invocation
 
 - DELETE - /api/monstres - Delete All
+
+#### Front
+
+Un front est disponible sur la route : 'http://localhost:8081/index.html'. Il permet de :
+
+- créer un compte utilisateur ✅
+- se connecter à un compte utilisateur en ayant un token ✅
+- récupérer les informations du joueur de l'utilisateur ❌ (problème de CORS)
+- créer un monstre ❌ (problème de CORS)
+- voir tous les monstres ❌ (problème de CORS)
 
