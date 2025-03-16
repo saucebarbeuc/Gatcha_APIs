@@ -36,7 +36,7 @@ form_register.addEventListener('submit', async (e) => {
     e.preventDefault();
     let data = new FormData(form_register);
     let json = JSON.stringify(Object.fromEntries(data.entries()));
-    let response = await call_api(API_AUTH + '/register', 'POST', {
+    let response = await call_api(API_AUTH, 'POST', {
         'Content-Type': 'application/json'
     }, json);
 
