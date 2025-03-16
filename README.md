@@ -1,5 +1,8 @@
 # TD Docker / Spring Boot / MongoDB
 
+Gatche_api est un projet de démonstration pour l'utilisation de Docker, Spring Boot et MongoDB.
+Il a pour but de simuler un jeu de type "Gatcha" où l'utilisateur peut invoquer des monstres et les ajouter à sa collection.
+
 ## Endpoints
 
 - API Endpoint: `http://localhost:8081/api/users`
