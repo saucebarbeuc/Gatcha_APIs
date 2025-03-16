@@ -18,6 +18,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/joueurs")
 @Tag(name = "Joueur", description = "API pour gérer les joueurs")
+@CrossOrigin(origins = "http://localhost:8081", allowedHeaders = "*", allowCredentials = "true")
 public class JoueurController {
 
     @Autowired
@@ -33,6 +34,9 @@ public class JoueurController {
     @GetMapping("/{id}")
     public ResponseEntity<Joueur> getJoueurById(@PathVariable String id) {
         Optional<Joueur> joueur = joueurService.getJoueurById(id);
+        //ResponseEntity<Joueur> res = joueur.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        //res.getHeaders().add("Access-Control-Allow-Origin", "*");
+        //return res;
         return joueur.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
