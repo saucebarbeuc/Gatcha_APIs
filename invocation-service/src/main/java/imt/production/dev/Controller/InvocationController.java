@@ -1,11 +1,11 @@
 package imt.production.dev.Controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import imt.production.dev.Dto.MonstreUtils.MonstreDto;
 import imt.production.dev.Service.InvocationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,7 +24,7 @@ public class InvocationController {
 
     @Operation(summary = "Invoque un monstre")
     @GetMapping()
-    public ResponseEntity<Map<String, String>> invoque(HttpServletRequest request) {
+    public ResponseEntity<MonstreDto> invoque(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         String username = (String) request.getAttribute("username");
         return ResponseEntity.ok(invocationService.invoque(token, username));

@@ -2,7 +2,6 @@ package imt.production.dev.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -34,23 +33,26 @@ public class InvocationService {
         this.invocationRepository = invocationRepository;
     }
 
-    public Map<String, String> invoque(String token, String username) {
+    public MonstreDto invoque(String token, String username) {
         List<MonstreResource> resourceMonstres = ressourceRepository.findAllMonstres();
 
         InvocationBackup backup = new InvocationBackup();
         backup.setUsername(username);
         backup.setCalcul(CalculInvocation.chose(resourceMonstres));
 
+        MonstreDto monstreDto = RessourceMapper.toDto(resourceMonstres.get(backup.getCalcul()));
+
         try {
             // peut lever une exception
-            String idMonstre = monstreHttp.create(RessourceMapper.toDto(resourceMonstres.get(backup.getCalcul())), token);
+            String idMonstre = monstreHttp.create(monstreDto, token);
 
             backup.setIdMonstre(idMonstre);
 
             // peut lever une exception
             joueurHttp.acquireMonstre(idMonstre, token);
 
-            return Map.of("id", invocationRepository.save(backup).getId());
+            invocationRepository.save(backup);
+            return monstreDto;
         } catch (RuntimeException e) {
             backupRepository.save(backup);
             throw new RuntimeException(e.getMessage() + ", Backup saved.");
