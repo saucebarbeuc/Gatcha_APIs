@@ -95,12 +95,12 @@ Testé sur 10000 lancé avec une marge d'erreur de 1.5%
 - GET - /api/joueurs/monsters - Récupérer la liste d'ID de monstres
 
 - POST - /api/joueurs/monsters - Acquérir un nouveau monstre
-Sécurité : Ajouter sécuritée pour qu'un joueur ne puisse pas ajouter n'importe quel monstre à sa liste si il connait sont ID.
+1) Sécurité : Ajouter sécuritée pour qu'un joueur ne puisse pas ajouter n'importe quel monstre à sa liste si il connait sont ID.
 
 - GET - /api/joueurs/level/{id} - Récupérer le niveau d'un joueur
 
 - DELETE - /api/joueurs/{id}/monsters - Supprimer un monstre
-Sécurité : Ajouter sécuritée (pareil que pour  *Acquérir un nouveau monstre*)
+1) Sécurité : Ajouter sécuritée (pareil que pour  *Acquérir un nouveau monstre*)
 
 #### Monstre
 
@@ -113,7 +113,7 @@ Sécurité : Ajouter sécuritée (pareil que pour  *Acquérir un nouveau monstre
 - GET - /api/monstres - Get All Monstres
 
 - POST - /api/monstres - Create
-Sécurité : Ajoutée sécuritée pour que la création passe uniquement par l'api invocation
+1) Sécurité : Ajoutée sécuritée pour que la création passe uniquement par l'api invocation
 
 - DELETE - /api/monstres - Delete All
 
