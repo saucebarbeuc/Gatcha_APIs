@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test API Auth</title>
+    <script defer src="js/script.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<h1>Test API d'invocation</h1>
+<h4 id="error"></h4>
+<div class="container">
+
+    <section id="invocation-section">
+        <h2>Invocation</h2>
+        <article>
+            <h3>1 - Invocation d'un monstre</h3>
+            <form id="form-invocation">
+                <p>
+                    <label for="token">Token</label>
+                    <input type="text" id="token" name="token" placeholder="Entrez votre Token" required>
+                </p>
+                <p>
+                    <button type="submit">Générer une invocation !</button>
+                </p>
+            </form>
+            <ul id="readall-invocation-response"></ul>
+        </article>
+    </section>
+
+</div>
+</body>
+</html>

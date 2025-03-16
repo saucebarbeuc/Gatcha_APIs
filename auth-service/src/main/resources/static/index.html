@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test API Auth</title>
+    <script defer src="js/script.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<h1>Test API d'authentification - <span id="connected">Non Connecté</span></h1>
+<h4 id="error"></h4>
+<div class="container">
+
+    <section id="auth-section">
+        <h2>Authentification</h2>
+
+        <article>
+            <h3>1 - Création de compte</h3>
+            <form id="form-register">
+                <p>
+                    <label for="login">Login</label>
+                    <input type="text" id="login" name="username" placeholder="Entrez votre login" required>
+                </p>
+                <p>
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe" required>
+                </p>
+                <p>
+                    <button type="submit">Créer un compte</button>
+                </p>
+            </form>
+        </article>
+
+        <article>
+            <h3>2 - Connexion</h3>
+            <form id="form-login">
+                <p>
+                    <label for="login">Login</label>
+                    <input type="text" id="login" name="username" placeholder="Entrez votre login" required>
+                </p>
+                <p>
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe" required>
+                </p>
+                <p>
+                    <button type="submit">Se connecter</button>
+                </p>
+            </form>
+        </article>
+
+    </section>
+
+<!--    <section id="invocation-section">-->
+<!--        <h2>Invocation</h2>-->
+<!--        <article>-->
+<!--            <h3>3 - Invoquer un monstre</h3>-->
+<!--            <button id="get-invocation">Invoquer un monstre</button>-->
+<!--            <ul id="readall-invocation-response"></ul>-->
+<!--        </article>-->
+<!--    </section>-->
+
+<!--    <section id="joueur-section">-->
+<!--        <h2>Joueur</h2>-->
+<!--        <article>-->
+<!--            <h3>4 - Voir mon joueur</h3>-->
+<!--            <button id="get-joueur">Voir mon joueur</button>-->
+<!--            <ul id="readall-joueur-response"></ul>-->
+<!--        </article>-->
+<!--    </section>-->
+
+<!--    <section id="monster-section">-->
+<!--        <h2>Monstres</h2>-->
+<!--        <article>-->
+<!--            <h3>5 - Création de monstres</h3>-->
+<!--            <form id="form-monster">-->
+<!--                <p>-->
+<!--                    <label for="nom">Nom du monstre</label>-->
+<!--                    <input type="text" id="nom" name="nom" placeholder="Entrez le nom du monstre" required>-->
+<!--                </p>-->
+<!--                <p>-->
+<!--                    <button type="submit">Créer le monstre</button>-->
+<!--                </p>-->
+<!--            </form>-->
+<!--        </article>-->
+<!--        <article>-->
+<!--            <h3>5 - Voir tous les monstres</h3>-->
+<!--            <button id="get-monsters">Voir les monstres</button>-->
+<!--            <ul id="readall-monster-response"></ul>-->
+<!--        </article>-->
+
+<!--    </section>-->
+
+</div>
+</body>
+</html>
