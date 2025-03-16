@@ -1,5 +1,7 @@
 # TD Docker / Spring Boot / MongoDB
 
+Projet réalisé par Caron Florimond, Beaurepaire Paul et Watel Noa
+
 Gatche_api est un projet de démonstration pour l'utilisation de Docker, Spring Boot et MongoDB.
 Il a pour but de simuler un jeu de type "Gatcha" où l'utilisateur peut invoquer des monstres et les ajouter à sa collection.
 
@@ -58,18 +60,18 @@ Goto [Spring Intializr](https://start.spring.io/)
 #### Invocation
 
 - POST - /api/invocations - Invoque un monstre
-0) Choisit un monstre dans la liste des ressources (Json)
-1) Appelle Monstre Api (corriger mapper MonstreResource -> MonstreDto : voir parametre par défaut Mapper.RessourceMapper)
-2) Appelle Joueur Api pour ajouter l'id du monstre à la liste de monstre du joueur
-3) Save Invocation
-4) en cas de probleme (api injoignable) Save backup (au lieu de Save Invocation)
+1) Choisit un monstre dans la liste des ressources (JSON)
+2) Appelle l'API Monstre pour obtenir les détails du monstre
+3) Appelle l'API Joueur pour ajouter l'ID du monstre à la liste des monstres du joueur
+4) Sauvegarde l'invocation
+5) En cas de problème (API injoignable), sauvegarde une copie de secours (backup)
 
 - POST - /api/invocations/recup - Rejoue les invocations stoppées
-0) Recupere la liste de backup du joueur
-1) Si l'id Monstre est null -> Appelle Monstre Api, Joueur Api
-2) Sinon appelle directement Joueur Api
-3) Suppprime backup
-4) Save Invocation
+1) Récupère la liste de secours du joueur
+2) Si l'ID du monstre est null, appelle les API Monstre et Joueur
+3) Sinon, appelle directement l'API Joueur
+4) Supprime la copie de secours
+5) Sauvegarde l'invocation
 
 - Test Unitaire Utils.CalculInvocationTest
 Testé sur 10000 lancé avec une marge d'erreur de 1.5%
@@ -93,12 +95,12 @@ Testé sur 10000 lancé avec une marge d'erreur de 1.5%
 - GET - /api/joueurs/monsters - Récupérer la liste d'ID de monstres
 
 - POST - /api/joueurs/monsters - Acquérir un nouveau monstre
-1) Ajouter sécuritée pour qu'un joueur ne puisse pas ajouter n'importe quel monstre à sa liste si il connait sont ID.
+Sécurité : Ajouter sécuritée pour qu'un joueur ne puisse pas ajouter n'importe quel monstre à sa liste si il connait sont ID.
 
 - GET - /api/joueurs/level/{id} - Récupérer le niveau d'un joueur
 
 - DELETE - /api/joueurs/{id}/monsters - Supprimer un monstre
-1) Ajouter sécuritée (pareil que pour  *Acquérir un nouveau monstre*)
+Sécurité : Ajouter sécuritée (pareil que pour  *Acquérir un nouveau monstre*)
 
 #### Monstre
 
@@ -111,7 +113,7 @@ Testé sur 10000 lancé avec une marge d'erreur de 1.5%
 - GET - /api/monstres - Get All Monstres
 
 - POST - /api/monstres - Create
-1) Ajoutée sécuritée pour que la création passe uniquement par l'api invocation
+Sécurité : Ajoutée sécuritée pour que la création passe uniquement par l'api invocation
 
 - DELETE - /api/monstres - Delete All
 
