@@ -22,7 +22,7 @@ public class InvocationController {
         this.invocationService = invocationService;
     }
 
-    @Operation(summary = "Invoque un monstre")
+    @Operation(summary = "Invoque un monstre pour l'utilisateur connecté, retourne le monstre invoqué")
     @GetMapping()
     public ResponseEntity<MonstreDto> invoque(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
@@ -30,13 +30,12 @@ public class InvocationController {
         return ResponseEntity.ok(invocationService.invoque(token, username));
     }
 
-    @Operation(summary = "Rejoue les invocations stoppées")
+    @Operation(summary = "Rejoue les invocations stoppées (de l'utilisateur connecté), retourne la liste des monstres invoqués")
     @GetMapping("/recup")
-    public ResponseEntity<List<String>> recup(HttpServletRequest request) {
+    public ResponseEntity<List<MonstreDto>> recup(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         String username = (String) request.getAttribute("username");
-        List<String> recups = invocationService.recup(token, username);
-        return ResponseEntity.ok(recups);
+        return ResponseEntity.ok(invocationService.recup(token, username));
     }    
 
     // @GetMapping("/data")

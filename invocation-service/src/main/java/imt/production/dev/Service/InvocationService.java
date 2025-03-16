@@ -59,17 +59,17 @@ public class InvocationService {
         }
     }
 
-    public List<String> recup(String token, String username) {
+    public List<MonstreDto> recup(String token, String username) {
         List<MonstreResource> resourceMonstres = ressourceRepository.findAllMonstres();
         List<InvocationBackup> backups = backupRepository.findByUsername(username);
-        List<String> invoceId = new ArrayList<>();
+        List<MonstreDto> sumoned = new ArrayList<>();
 
         for (InvocationBackup backup : backups) {
             String idMonstre = backup.getIdMonstre();
+            MonstreDto monstreDto = RessourceMapper.toDto(resourceMonstres.get(backup.getCalcul()));
 
             if(idMonstre == null) {
                 
-                MonstreDto monstreDto =  RessourceMapper.toDto(resourceMonstres.get(backup.getCalcul()));
                 idMonstre = monstreHttp.create(monstreDto, token);
                 backup.setIdMonstre(idMonstre);
                 
@@ -77,10 +77,12 @@ public class InvocationService {
 
             joueurHttp.acquireMonstre(idMonstre, token);
 
-            invoceId.add(invocationRepository.save(backup).getId());
+            invocationRepository.save(backup);
             backupRepository.deleteById(backup.getId());
+
+            sumoned.add(monstreDto);
         }
-        return invoceId;
+        return sumoned;
     }
     
     // public List<MonstreResource> data() {
