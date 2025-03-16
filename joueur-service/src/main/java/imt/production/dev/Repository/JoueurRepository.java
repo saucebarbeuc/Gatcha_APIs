@@ -10,7 +10,7 @@ import imt.production.dev.Model.Joueur;
 @Repository
 public interface JoueurRepository extends MongoRepository<Joueur, String> {
     Optional<Joueur> findByName(String name);
-    void deleteById(String id);
+    void deleteByName(String username);
     boolean existsByName(String username);
 
     List<Joueur> id(@NotBlank(message = "Identifiant unique du joueur") String id);

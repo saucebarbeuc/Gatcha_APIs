@@ -28,6 +28,10 @@ public class JoueurService {
         return joueurRepository.findById(id);
     }
 
+    public Optional<Joueur> getJoueurByName(String name) {
+        return joueurRepository.findByName(name);
+    }
+
     public Optional<List<String>> getJoueurMonstersByName(String username) {
         return joueurRepository.findByName(username)
                 .map(joueur -> Optional.ofNullable(joueur.getMonsters())
@@ -49,8 +53,8 @@ public class JoueurService {
         return new JoueurDto(joueurRepository.save(joueur).getName());
     }
 
-    public Joueur updateJoueur(String id, JoueurDto dto) {
-        Optional<Joueur> joueur = joueurRepository.findById(id);
+    public Joueur updateJoueur(String username, JoueurDto dto) {
+        Optional<Joueur> joueur = joueurRepository.findByName(username);
 
         if (joueur.isPresent()) {
             joueur.get().setName(dto.getUsername());
@@ -61,12 +65,12 @@ public class JoueurService {
         return  null;
     }
 
-    public void deleteJoueur(String id) {
-        joueurRepository.deleteById(id);
+    public void deleteJoueur(String username) {
+        joueurRepository.deleteByName(username);
     }
 
-    public Joueur gainExperience(String id, int experience) {
-        Joueur joueur = joueurRepository.findById(id).orElse(null);
+    public Joueur gainExperience(String username, int experience) {
+        Joueur joueur = joueurRepository.findByName(username).orElse(null);
         if (joueur == null) {
             return null;
         }
@@ -103,8 +107,8 @@ public class JoueurService {
         return new JoueurDto(joueur.getName());
     }
 
-    public Joueur removeMonster(String id, String monster) {
-        Joueur joueur = joueurRepository.findById(id).orElse(null);
+    public Joueur removeMonster(String username, String monster) {
+        Joueur joueur = joueurRepository.findByName(username).orElse(null);
         if (joueur == null) {
             return null;
         }

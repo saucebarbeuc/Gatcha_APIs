@@ -23,31 +23,29 @@ public class JoueurController {
     @Autowired
     private JoueurService joueurService;
 
-    @Operation(summary = "Récupérer tous les joueurs")
+    @Operation(summary = "Récupérer un joueur par Name")
     @GetMapping
-    public List<Joueur> getAllJoueurs() {
-        return joueurService.getAllJoueurs();
-    }
-
-    @Operation(summary = "Récupérer un joueur par ID")
-    @GetMapping("/{id}")
-    public ResponseEntity<Joueur> getJoueurById(@PathVariable String id) {
-        Optional<Joueur> joueur = joueurService.getJoueurById(id);
-        return joueur.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Joueur> getJoueurByName(HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        Optional<Joueur> joueur = joueurService.getJoueurByName(username);
+        return joueur
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Récupérer la liste d'ID de monstres")
     @GetMapping("/monsters")
-    public ResponseEntity<List<String>> getMonstersById(HttpServletRequest request) {
+    public ResponseEntity<List<String>> getMonstersByName(HttpServletRequest request) {
         String username = (String) request.getAttribute("username");
         Optional<List<String>> monsters = joueurService.getJoueurMonstersByName(username);
         return monsters.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Récupérer le niveau d'un joueur")
-    @GetMapping("/level/{id}")
-    public ResponseEntity<Integer> getJoueurLevel(@PathVariable String id) {
-        Optional<Joueur> joueur = joueurService.getJoueurById(id);
+    @GetMapping("/level")
+    public ResponseEntity<Integer> getJoueurLevel(HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        Optional<Joueur> joueur = joueurService.getJoueurByName(username);
         return joueur.map(j -> ResponseEntity.ok(j.getLevel())).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -61,9 +59,10 @@ public class JoueurController {
     }
 
     @Operation(summary = "Mettre à jour un joueur")
-    @PutMapping("/{id}")
-    public ResponseEntity<Joueur> updateJoueur(@PathVariable String id, @RequestBody JoueurDto joueurDetails) {
-        Joueur updatedJoueur = joueurService.updateJoueur(id, joueurDetails);
+    @PutMapping
+    public ResponseEntity<Joueur> updateJoueur(HttpServletRequest request, @RequestBody JoueurDto joueurDetails) {
+        String username = (String) request.getAttribute("username");
+        Joueur updatedJoueur = joueurService.updateJoueur(username, joueurDetails);
         if (updatedJoueur != null) {
             return ResponseEntity.ok(updatedJoueur);
         }
@@ -71,16 +70,18 @@ public class JoueurController {
     }
 
     @Operation(summary = "Supprimer un joueur")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteJoueur(@PathVariable String id) {
-        joueurService.deleteJoueur(id);
+    @DeleteMapping
+    public ResponseEntity<Void> deleteJoueur(HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        joueurService.deleteJoueur(username);
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Gagner de l'expérience")
-    @PostMapping("/{id}/experience")
-    public ResponseEntity<Joueur> gainExperience(@PathVariable String id, @RequestParam int experience) {
-        Joueur updatedJoueur = joueurService.gainExperience(id, experience);
+    @PostMapping("/experience")
+    public ResponseEntity<Joueur> gainExperience(HttpServletRequest request, @RequestParam int experience) {
+        String username = (String) request.getAttribute("username");
+        Joueur updatedJoueur = joueurService.gainExperience(username, experience);
         if (updatedJoueur != null) {
             return ResponseEntity.ok(updatedJoueur);
         }
@@ -88,9 +89,10 @@ public class JoueurController {
     }
 
     @Operation(summary = "Monter de niveau")
-    @PostMapping("/{id}/levelup")
-    public ResponseEntity<Joueur> levelUp(@PathVariable String id) {
-        Joueur joueur = joueurService.getJoueurById(id).orElse(null);
+    @PostMapping("/levelup")
+    public ResponseEntity<Joueur> levelUp(HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        Joueur joueur = joueurService.getJoueurByName(username).orElse(null);
         if (joueur == null) {
             return ResponseEntity.notFound().build();
         }
@@ -111,9 +113,10 @@ public class JoueurController {
     }
 
     @Operation(summary = "Supprimer un monstre")
-    @DeleteMapping("/{id}/monsters")
-    public ResponseEntity<Joueur> removeMonster(@PathVariable String id, @RequestParam String monster) {
-        Joueur updatedJoueur = joueurService.removeMonster(id, monster);
+    @DeleteMapping("/monsters")
+    public ResponseEntity<Joueur> removeMonster(HttpServletRequest request, @RequestParam String monster) {
+        String username = (String) request.getAttribute("username");
+        Joueur updatedJoueur = joueurService.removeMonster(username,monster);
         if (updatedJoueur != null) {
             return ResponseEntity.ok(updatedJoueur);
         }
